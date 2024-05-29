@@ -39,8 +39,22 @@ const crypt = async (string) => {
   return md5Bytes.toString();
 };
 
+const timestampFormat = (time) => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Tambah 1 karena bulan di JavaScript dimulai dari 0
+  const day = String(today.getDate()).padStart(2, "0");
+  const date = `${year}-${month}-${day}`;
+  const [hours, minutes] = time.split(":");
+  const dateTimeString = `${date}T${hours}:${minutes}:00`;
+  const timestamp = new Date(dateTimeString);
+
+  return timestamp;
+};
+
 module.exports = {
   id,
   token,
   crypt,
+  timestampFormat,
 };

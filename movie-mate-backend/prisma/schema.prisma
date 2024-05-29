@@ -24,47 +24,38 @@ model user {
 }
 
 model movie {
-  movie_id                      String         @id
-  key                           String         @unique
-  title                         String
-  movie_url                     String
-  image_url                     String
-  type                          String?
-  producer                      String?
-  director                      String?
-  writer                        String?
-  production                    String?
-  cast                          String?
-  minute                        Int            @default(0)
-  synopsis                      String?
-  category                      String?
-  category_url                  String?
-  trailer_url                   String?
-  source_type                   SourceType     @default(manual)
-  created_at                    DateTime       @default(now())
-  updated_at                    DateTime       @default(now())
-  movie_theater                 movie_theater? @relation(fields: [movie_theaterMovie_theater_id], references: [movie_theater_id])
-  movie_theaterMovie_theater_id String?
-  favourite                     favourite?     @relation(fields: [favouriteFavourite_id], references: [favourite_id])
-  favouriteFavourite_id         String?
+  movie_id              String     @id
+  key                   String     @unique
+  title                 String
+  movie_url             String
+  image_url             String
+  type                  String?
+  producer              String?
+  director              String?
+  writer                String?
+  production            String?
+  cast                  String?
+  minute                Int        @default(0)
+  synopsis              String?
+  category              String?
+  category_url          String?
+  trailer_url           String?
+  source_type           SourceType @default(manual)
+  created_at            DateTime   @default(now())
+  updated_at            DateTime   @default(now())
+  favourite             favourite? @relation(fields: [favouriteFavourite_id], references: [favourite_id])
+  favouriteFavourite_id String?
 }
 
 model schedule {
-  schedule_id                 String          @id @unique
-  movie_theater_id            movie_theater[]
-  start_timestamp             DateTime
-  created_at                  DateTime        @default(now())
-  session_mate                session_mate?   @relation(fields: [session_mateSession_mate_id], references: [session_mate_id])
+  schedule_id                 String        @id
+  schedule_key                String        @unique
+  movie_theater_id            String
+  start_timestamp             DateTime?
+  start_time                  String?
+  created_at                  DateTime      @default(now())
+  session_mate                session_mate? @relation(fields: [session_mateSession_mate_id], references: [session_mate_id])
   session_mateSession_mate_id String?
-}
-
-model price {
-  price_id   String    @id @unique
-  day        Day       @default(sunday)
-  theater_id theater[]
-  price      Int
-  created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
 }
 
 model favourite {
@@ -83,26 +74,24 @@ model session_mate {
 }
 
 model movie_theater {
-  movie_theater_id    String    @id @unique
-  theater_id          theater[]
-  movie_id            movie[]
-  created_at          DateTime  @default(now())
-  schedule            schedule? @relation(fields: [scheduleSchedule_id], references: [schedule_id])
+  movie_theater_id    String   @id
+  key                 String   @unique
+  theater_id          String
+  movie_id            String
+  weekday_price       Int      @default(0)
+  weekend_price       Int      @default(0)
+  created_at          DateTime @default(now())
   scheduleSchedule_id String?
 }
 
 model theater {
-  theater_id                    String         @id
-  theater_key                   String         @unique
-  city_id                       String
-  name                          String
-  theater_url                   String?
-  address                       String?
-  created_at                    DateTime       @default(now())
-  movie_theater                 movie_theater? @relation(fields: [movie_theaterMovie_theater_id], references: [movie_theater_id])
-  movie_theaterMovie_theater_id String?
-  price                         price?         @relation(fields: [pricePrice_id], references: [price_id])
-  pricePrice_id                 String?
+  theater_id  String   @id
+  theater_key String   @unique
+  city_id     String
+  name        String
+  theater_url String?
+  address     String?
+  created_at  DateTime @default(now())
 }
 
 model city {
