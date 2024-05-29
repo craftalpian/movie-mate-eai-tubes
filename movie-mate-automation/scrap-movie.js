@@ -1,11 +1,7 @@
-const { unescape } = require("querystring");
-
 (async () => {
   const axios = require("axios");
   const { PrismaClient } = require("@prisma/client");
   const { id, crypt, token: generateToken } = require("./utils");
-  const sanitize = require("sanitize-html");
-  const { escape } = require("html-escaper");
   const prisma = new PrismaClient();
 
   const cities = await prisma.city.findMany({
