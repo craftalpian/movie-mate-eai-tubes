@@ -67,7 +67,11 @@
             .split('"')[0]
             .trim()
         : "" ?? "";
-      const movieImageUrl = `https://media.21cineplex.com${(movie.split(`media.21cineplex.com`)[1] ?? "").split('"')[0].trim() ?? ""}`
+      const movieImageUrl = `https://media.21cineplex.com${
+        (movie.split(`media.21cineplex.com`)[1] ?? "").split('"')[0].trim() ??
+        ""
+      }`;
+      const movieCrypt = await crypt(movieName);
 
       console.log({
         movieUrl,
@@ -75,6 +79,7 @@
         movieCategory,
         movieCategoryUrl,
         movieImageUrl,
+        movieCrypt,
       });
     }
 
