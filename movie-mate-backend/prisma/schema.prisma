@@ -37,6 +37,7 @@ model movie {
   minute                        Int            @default(0)
   synopsis                      String?
   category                      String?
+  category_url                  String?
   trailer_url                   String?
   source_type                   SourceType     @default(manual)
   created_at                    DateTime       @default(now())

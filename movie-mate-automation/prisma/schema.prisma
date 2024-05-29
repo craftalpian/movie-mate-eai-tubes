@@ -27,6 +27,7 @@ model movie {
   updated_at                    DateTime       @default(now())
   favouriteFavourite_id         String?
   movie_theaterMovie_theater_id String?
+  category_url                  String?
   favourite                     favourite?     @relation(fields: [favouriteFavourite_id], references: [favourite_id])
   movie_theater                 movie_theater? @relation(fields: [movie_theaterMovie_theater_id], references: [movie_theater_id])
 }
