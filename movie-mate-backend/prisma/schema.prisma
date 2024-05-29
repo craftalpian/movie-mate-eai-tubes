@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model movie {
+  movie_id    String     @id
+  key         String     @unique
+  title       String
+  image_url   String
+  type        String?
+  producer    String?
+  director    String?
+  writer      String?
+  production  String?
+  cast        String?
+  minute      Int        @default(0)
+  synopsis    String?
+  category    String?
+  trailer_url String?
+  source_type SourceType @default(manual)
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @default(now())
+}
+
+enum SourceType {
+  manual
+  automation
+}
