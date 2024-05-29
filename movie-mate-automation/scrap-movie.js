@@ -73,14 +73,36 @@
       }`;
       const movieCrypt = await crypt(movieName);
 
-      console.log({
-        movieUrl,
-        movieName,
-        movieCategory,
-        movieCategoryUrl,
-        movieImageUrl,
-        movieCrypt,
-      });
+      if (movieName.length > 0) {
+        try {
+          await prisma.movie.upsert({
+            create: {
+              key: movieCrypt,
+              image_url: movieImageUrl,
+              movie_id: id("movie"),
+              title: movieName,
+              category: movieCategory,
+              category_url: movieCategoryUrl,
+              movie_url: movieUrl,
+            },
+            update: {
+              image_url: movieImageUrl,
+              movie_id: id("movie"),
+              title: movieName,
+              category: movieCategory,
+              category_url: movieCategoryUrl,
+              movie_url: movieUrl,
+            },
+            where: {
+              key: movieCrypt,
+            },
+          });
+
+          console.log(`=> ${movieName} berhasil diperbarui`);
+        } catch (error) {
+          throw new Error(error);
+        }
+      }
     }
 
     // console.log(response.data);

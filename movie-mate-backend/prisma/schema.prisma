@@ -27,6 +27,7 @@ model movie {
   movie_id                      String         @id
   key                           String         @unique
   title                         String
+  movie_url                     String
   image_url                     String
   type                          String?
   producer                      String?
@@ -91,10 +92,12 @@ model movie_theater {
 }
 
 model theater {
-  theater_id                    String         @id @unique
-  city                          city[]
+  theater_id                    String         @id
+  theater_key                   String         @unique
+  city_id                       String
   name                          String
-  address                       String
+  theater_url                   String?
+  address                       String?
   created_at                    DateTime       @default(now())
   movie_theater                 movie_theater? @relation(fields: [movie_theaterMovie_theater_id], references: [movie_theater_id])
   movie_theaterMovie_theater_id String?
@@ -106,8 +109,8 @@ model city {
   city_id           String   @id
   city              String   @unique
   name              String
+  city_url          String?
   updated_at        DateTime @default(now())
-  theater           theater? @relation(fields: [theaterTheater_id], references: [theater_id])
   theaterTheater_id String?
 }
 
