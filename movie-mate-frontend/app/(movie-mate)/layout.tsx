@@ -1,3 +1,7 @@
+"use client";
+
+import ReactQueryProvider from "./_providers/react-query";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -62,7 +66,7 @@ export default function RootLayout({
           </div>
         </div>
       </div>
-      {children}
+      <ReactQueryProvider>{children}</ReactQueryProvider>
     </div>
   );
 }
