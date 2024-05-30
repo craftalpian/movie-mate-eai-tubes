@@ -1,8 +1,9 @@
 import express from "express";
-import { listAllMovie } from "../controller";
+import { listAllCity, listAllMovie } from "../controller";
 
 const router = express.Router();
 
 router.get("/movie", listAllMovie);
+router.get("/city", listAllCity);
 
 export default router;

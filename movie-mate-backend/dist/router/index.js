@@ -7,4 +7,5 @@ const express_1 = __importDefault(require("express"));
 const controller_1 = require("../controller");
 const router = express_1.default.Router();
 router.get("/movie", controller_1.listAllMovie);
+router.get("/city", controller_1.listAllCity);
 exports.default = router;

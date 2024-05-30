@@ -49,7 +49,7 @@ export default function RootLayout({
           </div>
         </div>
         <div className="navbar-center">
-          <a className="btn btn-ghost text-xl">MovieMate👻</a>
+          <a className="btn btn-ghost text-xl" href="/">MovieMate👻</a>
         </div>
         <div className="navbar-end">
           <div
