@@ -4,8 +4,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="max-w-sm bg-white mx-auto h-screen">
-      <div className="navbar bg-base-100 border-b shadow-sm">
+    <div className="max-w-sm bg-white mx-auto h-screen no-scrollbar scrollbar-hide">
+      <div className="navbar bg-base-100 border-b shadow-sm absolute top-0 max-w-sm z-50">
         <div className="navbar-start">
           <div className="dropdown">
             <div

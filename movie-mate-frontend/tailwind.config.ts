@@ -15,7 +15,11 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("tailwind-scrollbar-hide"),
+    require("@tailwindcss/typography"),
+    require("daisyui"),
+  ],
   daisyui: {
     themes: ["light", "dark", "cupcake"],
   },
