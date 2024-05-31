@@ -6,7 +6,7 @@ const movieService = new MovieService();
 const listAllMovie = async (req: Request, res: Response) => {
   try {
     const allMovie = await movieService.allMovie();
-    return res.json({ data: allMovie });
+    return res.status(200).json({ data: allMovie });
   } catch (error) {}
 };
 
@@ -14,7 +14,7 @@ const movieDetail = async (req: Request, res: Response) => {
   try {
     const { movie_id } = req?.params;
     const movie = await movieService.movieById(movie_id);
-    return res.json({ data: movie });
+    return res.status(200).json({ data: movie });
   } catch (error) {}
 };
 

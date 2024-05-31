@@ -15,7 +15,7 @@ const movieService = new service_1.MovieService();
 const listAllMovie = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const allMovie = yield movieService.allMovie();
-        return res.json({ data: allMovie });
+        return res.status(200).json({ data: allMovie });
     }
     catch (error) { }
 });
@@ -24,7 +24,7 @@ const movieDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const { movie_id } = req === null || req === void 0 ? void 0 : req.params;
         const movie = yield movieService.movieById(movie_id);
-        return res.json({ data: movie });
+        return res.status(200).json({ data: movie });
     }
     catch (error) { }
 });
