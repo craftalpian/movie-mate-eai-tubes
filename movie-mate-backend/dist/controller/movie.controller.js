@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listAllMovie = void 0;
+exports.theaterByCity = exports.listAllMovie = void 0;
 const service_1 = require("../service");
 const movieService = new service_1.MovieService();
 const listAllMovie = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -20,3 +20,11 @@ const listAllMovie = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     catch (error) { }
 });
 exports.listAllMovie = listAllMovie;
+const theaterByCity = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const allTheaterByCity = yield movieService.theaterByCity("city_4ZZgO8GT0PmnV75ZLm5v");
+        return res.json({ data: allTheaterByCity });
+    }
+    catch (error) { }
+});
+exports.theaterByCity = theaterByCity;

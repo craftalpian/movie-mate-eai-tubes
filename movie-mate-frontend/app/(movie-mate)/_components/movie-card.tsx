@@ -1,11 +1,13 @@
 const MovieCard = ({
   title,
   imageUrl,
+  synopsis,
 }: {
   title: string;
   imageUrl: string;
+  synopsis?: string | null;
 }) => (
-  <div className="card w-full bg-base-100 shadow-xl">
+  <div className="card w-full bg-base-100 shadow-xl hover:border hover:shadow-2xl cursor-pointer">
     <img
       src={imageUrl}
       alt={title}
@@ -17,7 +19,7 @@ const MovieCard = ({
         {title}
         {/* <div className="badge badge-secondary">NEW</div> */}
       </h2>
-      <p>If a dog chews shoes whose shoes does he choose?</p>
+      <p>{`${synopsis?.substring(0, 80)}...` || "-"}</p>
       <div className="card-actions justify-end">
         <div className="badge badge-outline">Fashion</div>
         <div className="badge badge-outline">Products</div>

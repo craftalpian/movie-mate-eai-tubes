@@ -1,4 +1,4 @@
-import { listAllMovie } from "./movie.controller";
+import { listAllMovie, theaterByCity } from "./movie.controller";
 import { listAllCity } from "./city.controller";
 
-export { listAllMovie, listAllCity };
+export { listAllMovie, listAllCity, theaterByCity };
