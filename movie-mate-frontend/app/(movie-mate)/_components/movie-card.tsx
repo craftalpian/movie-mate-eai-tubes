@@ -2,12 +2,17 @@ const MovieCard = ({
   title,
   imageUrl,
   synopsis,
+  onClickMovie,
 }: {
   title: string;
   imageUrl: string;
+  onClickMovie: (movie: string) => void;
   synopsis?: string | null;
 }) => (
-  <div className="card w-full bg-base-100 shadow-xl hover:border hover:shadow-2xl cursor-pointer">
+  <div
+    onClick={() => onClickMovie(title)}
+    className="card w-full bg-base-100 shadow-xl hover:border hover:shadow-2xl cursor-pointer"
+  >
     <img
       src={imageUrl}
       alt={title}
