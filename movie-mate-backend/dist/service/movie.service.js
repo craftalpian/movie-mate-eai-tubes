@@ -22,6 +22,30 @@ class MovieService {
                     image_url: true,
                     synopsis: true,
                     cast: true,
+                    movie_id: true,
+                },
+            });
+        });
+    }
+    movieById(movie_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.prismaClient.movie.findFirst({
+                where: {
+                    movie_id,
+                },
+                select: {
+                    cast: true,
+                    category: true,
+                    category_url: true,
+                    director: true,
+                    image_url: true,
+                    title: true,
+                    synopsis: true,
+                    minute: true,
+                    producer: true,
+                    writer: true,
+                    movie_id: true,
+                    production: true,
                 },
             });
         });

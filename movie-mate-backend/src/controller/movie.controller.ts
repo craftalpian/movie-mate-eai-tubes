@@ -10,6 +10,14 @@ const listAllMovie = async (req: Request, res: Response) => {
   } catch (error) {}
 };
 
+const movieDetail = async (req: Request, res: Response) => {
+  try {
+    const { movie_id } = req?.params;
+    const movie = await movieService.movieById(movie_id);
+    return res.json({ data: movie });
+  } catch (error) {}
+};
+
 const theaterByCity = async (req: Request, res: Response) => {
   try {
     const allTheaterByCity = await movieService.theaterByCity(
@@ -19,4 +27,4 @@ const theaterByCity = async (req: Request, res: Response) => {
   } catch (error) {}
 };
 
-export { listAllMovie, theaterByCity };
+export { listAllMovie, movieDetail, theaterByCity };

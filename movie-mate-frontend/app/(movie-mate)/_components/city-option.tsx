@@ -20,7 +20,7 @@ const CityOption = ({
   return (
     <div className="flex flex-row w-full justify-between items-center mb-4">
       <h2 className="card-title">{jakartaTime.format("LL")}</h2>
-      <div className="dropdown">
+      <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn m-1">
           {typeof index == "number" ? `${cities[index]?.name} 🔽` : "Pilih Kota 🔽"}
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import ReactQueryProvider from "./_providers/react-query";
+import ReduxProvider from "./_providers/store-provider";
 
 export default function RootLayout({
   children,
@@ -8,7 +9,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="max-w-sm bg-white mx-auto h-screen no-scrollbar scrollbar-hide">
+    <div className="max-w-sm bg-white mx-auto h-screen">
       <div className="navbar bg-base-100 border-b shadow-sm absolute top-0 max-w-sm z-50">
         <div className="navbar-start">
           <div className="dropdown">
@@ -49,7 +50,9 @@ export default function RootLayout({
           </div>
         </div>
         <div className="navbar-center">
-          <a className="btn btn-ghost text-xl" href="/">MovieMate👻</a>
+          <a className="btn btn-ghost text-xl" href="/">
+            MovieMate👻
+          </a>
         </div>
         <div className="navbar-end">
           <div
@@ -66,7 +69,9 @@ export default function RootLayout({
           </div>
         </div>
       </div>
-      <ReactQueryProvider>{children}</ReactQueryProvider>
+      <ReduxProvider>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
+      </ReduxProvider>
     </div>
   );
 }

@@ -3,14 +3,16 @@ const MovieCard = ({
   imageUrl,
   synopsis,
   onClickMovie,
+  movieId,
 }: {
   title: string;
   imageUrl: string;
+  movieId: string;
   onClickMovie: (movie: string) => void;
   synopsis?: string | null;
 }) => (
   <div
-    onClick={() => onClickMovie(title)}
+    onClick={() => onClickMovie(movieId)}
     className="card w-full bg-base-100 shadow-xl hover:border hover:shadow-2xl cursor-pointer"
   >
     <img
@@ -20,10 +22,7 @@ const MovieCard = ({
       height={78}
     />
     <div className="card-body">
-      <h2 className="card-title">
-        {title}
-        {/* <div className="badge badge-secondary">NEW</div> */}
-      </h2>
+      <h2 className="card-title">{title}</h2>
       <p>{`${synopsis?.substring(0, 80)}...` || "-"}</p>
       <div className="card-actions justify-end">
         <div className="badge badge-outline">Fashion</div>
