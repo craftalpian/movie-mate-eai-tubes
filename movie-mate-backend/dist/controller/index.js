@@ -1,9 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.movieDetail = exports.theaterByCity = exports.listAllCity = exports.listAllMovie = void 0;
+exports.listAllSchedule = exports.listAllTheater = exports.movieDetail = exports.listAllCity = exports.listAllMovie = void 0;
 const movie_controller_1 = require("./movie.controller");
 Object.defineProperty(exports, "listAllMovie", { enumerable: true, get: function () { return movie_controller_1.listAllMovie; } });
-Object.defineProperty(exports, "theaterByCity", { enumerable: true, get: function () { return movie_controller_1.theaterByCity; } });
 Object.defineProperty(exports, "movieDetail", { enumerable: true, get: function () { return movie_controller_1.movieDetail; } });
 const city_controller_1 = require("./city.controller");
 Object.defineProperty(exports, "listAllCity", { enumerable: true, get: function () { return city_controller_1.listAllCity; } });
+const theater_controller_1 = require("./theater.controller");
+Object.defineProperty(exports, "listAllTheater", { enumerable: true, get: function () { return theater_controller_1.listAllTheater; } });
+const schedule_controller_1 = require("./schedule.controller");
+Object.defineProperty(exports, "listAllSchedule", { enumerable: true, get: function () { return schedule_controller_1.listAllSchedule; } });

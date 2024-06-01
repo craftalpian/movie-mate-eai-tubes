@@ -5,14 +5,13 @@ import { useState } from "react";
 
 const ReactQueryProvider = ({ children }: { children: React.ReactNode }) => {
   const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            refetchOnWindowFocus: false,
-          },
+    new QueryClient({
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: false,
         },
-      })
+      },
+    })
   );
 
   return (

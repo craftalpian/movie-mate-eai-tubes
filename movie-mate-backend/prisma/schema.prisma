@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -45,17 +46,20 @@ model movie {
   updated_at            DateTime   @default(now())
   favourite             favourite? @relation(fields: [favouriteFavourite_id], references: [favourite_id])
   favouriteFavourite_id String?
+  theater               theater[]
 }
 
 model schedule {
-  schedule_id                 String        @id
-  schedule_key                String        @unique
-  movie_theater_id            String
-  start_timestamp             DateTime?
-  start_time                  String?
-  created_at                  DateTime      @default(now())
-  session_mate                session_mate? @relation(fields: [session_mateSession_mate_id], references: [session_mate_id])
-  session_mateSession_mate_id String?
+  schedule_id                   String         @id
+  schedule_key                  String         @unique
+  movie_theater_id              String
+  start_timestamp               DateTime?
+  start_time                    String?
+  created_at                    DateTime       @default(now())
+  session_mate                  session_mate?  @relation(fields: [session_mateSession_mate_id], references: [session_mate_id])
+  session_mateSession_mate_id   String?
+  movie_theater                 movie_theater? @relation(fields: [movie_theaterMovie_theater_id], references: [movie_theater_id])
+  movie_theaterMovie_theater_id String?
 }
 
 model favourite {
@@ -74,33 +78,41 @@ model session_mate {
 }
 
 model movie_theater {
-  movie_theater_id    String   @id
-  key                 String   @unique
+  movie_theater_id    String     @id
+  key                 String     @unique
   theater_id          String
   movie_id            String
-  weekday_price       Int      @default(0)
-  weekend_price       Int      @default(0)
-  created_at          DateTime @default(now())
+  weekday_price       Int        @default(0)
+  weekend_price       Int        @default(0)
+  created_at          DateTime   @default(now())
   scheduleSchedule_id String?
+  theater             theater?   @relation(fields: [theaterTheater_id], references: [theater_id])
+  theaterTheater_id   String?
+  schedule            schedule[]
 }
 
 model theater {
-  theater_id  String   @id
-  theater_key String   @unique
-  city_id     String
-  name        String
-  theater_url String?
-  address     String?
-  created_at  DateTime @default(now())
+  theater_id    String          @id
+  theater_key   String          @unique
+  city_id       String
+  name          String
+  theater_url   String?
+  address       String?
+  created_at    DateTime        @default(now())
+  movie_theater movie_theater[]
+  movie         movie?          @relation(fields: [movieMovie_id], references: [movie_id])
+  movieMovie_id String?
+  city          city?           @relation(fields: [cityCity_id], references: [city_id])
+  cityCity_id   String?
 }
 
 model city {
-  city_id           String   @id
-  city              String   @unique
-  name              String
-  city_url          String?
-  updated_at        DateTime @default(now())
-  theaterTheater_id String?
+  city_id    String    @id
+  city       String    @unique
+  name       String
+  city_url   String?
+  updated_at DateTime  @default(now())
+  theater    theater[]
 }
 
 enum SourceType {

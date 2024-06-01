@@ -4,10 +4,12 @@ const MovieCard = ({
   synopsis,
   onClickMovie,
   movieId,
+  type,
 }: {
   title: string;
   imageUrl: string;
   movieId: string;
+  type: string;
   onClickMovie: (movie: string) => void;
   synopsis?: string | null;
 }) => (
@@ -24,9 +26,10 @@ const MovieCard = ({
     <div className="card-body">
       <h2 className="card-title">{title}</h2>
       <p>{`${synopsis?.substring(0, 80)}...` || "-"}</p>
-      <div className="card-actions justify-end">
-        <div className="badge badge-outline">Fashion</div>
-        <div className="badge badge-outline">Products</div>
+      <div className="card-actions justify-end mt-2">
+        {type?.split(",")?.map((type: string) => (
+          <div className="badge badge-outline">{type.trim()}</div>
+        ))}
       </div>
     </div>
   </div>

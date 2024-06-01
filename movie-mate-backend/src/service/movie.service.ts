@@ -7,7 +7,12 @@ class MovieService {
     this.prismaClient = new PrismaClient();
   }
 
-  async allMovie() {
+  async allMovie(city_id?: any) {
+    if (city_id) {
+      return await this.prismaClient
+        .$queryRaw`select distinct movie.movie_id movie_id, movie.type type, movie.title title, movie.image_url image_url, movie.synopsis synopsis, movie.cast cast from movie join movie_theater on movie_theater.movie_id = movie.movie_id join schedule on schedule.movie_theater_id = movie_theater.movie_theater_id join theater on theater.theater_id = movie_theater.theater_id where theater.city_id = ${city_id};`;
+    }
+
     return await this.prismaClient.movie.findMany({
       select: {
         title: true,
@@ -15,6 +20,8 @@ class MovieService {
         synopsis: true,
         cast: true,
         movie_id: true,
+        type: true,
+        
       },
     });
   }

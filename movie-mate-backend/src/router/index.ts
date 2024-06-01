@@ -1,11 +1,18 @@
 import express from "express";
-import { listAllCity, listAllMovie, theaterByCity, movieDetail } from "../controller";
+import {
+  listAllCity,
+  listAllMovie,
+  movieDetail,
+  listAllTheater,
+  listAllSchedule,
+} from "../controller";
 
 const router = express.Router();
 
+router.get("/theater", listAllTheater);
 router.get("/movie", listAllMovie);
 router.get("/movie/:movie_id", movieDetail);
 router.get("/city", listAllCity);
-router.get("/theater", theaterByCity);
+router.get("/schedule", listAllSchedule);
 
 export default router;

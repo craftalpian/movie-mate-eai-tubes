@@ -9,12 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.theaterByCity = exports.movieDetail = exports.listAllMovie = void 0;
+exports.movieDetail = exports.listAllMovie = void 0;
 const service_1 = require("../service");
 const movieService = new service_1.MovieService();
 const listAllMovie = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const allMovie = yield movieService.allMovie();
+        const cityId = (_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.city_id;
+        const allMovie = yield movieService.allMovie(cityId);
         return res.status(200).json({ data: allMovie });
     }
     catch (error) { }
@@ -29,11 +31,3 @@ const movieDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     catch (error) { }
 });
 exports.movieDetail = movieDetail;
-const theaterByCity = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const allTheaterByCity = yield movieService.theaterByCity("city_4ZZgO8GT0PmnV75ZLm5v");
-        return res.json({ data: allTheaterByCity });
-    }
-    catch (error) { }
-});
-exports.theaterByCity = theaterByCity;
