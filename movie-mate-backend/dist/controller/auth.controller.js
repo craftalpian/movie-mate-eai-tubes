@@ -12,15 +12,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
 const service_1 = require("../service");
 const authService = new service_1.AuthService();
+const apiService = new service_1.ApiService();
+// login igracias
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { username, password } = req === null || req === void 0 ? void 0 : req.body;
-        console.log({ username, password });
-        yield authService.login({ username, password });
-        return res.json({ data: {} });
+        const { username, password, client_id } = req === null || req === void 0 ? void 0 : req.body;
+        const apiData = yield apiService.apiDetail(client_id);
+        if (!apiData)
+            throw new Error("client_id not found");
+        const igraciasData = yield authService.login({ username, password });
+        return res.status(200).json({
+            data: igraciasData,
+            success: true,
+            message: "Berhasil Masuk",
+        });
     }
     catch (error) {
-        console.error({ error });
+        return res.status(400).json({
+            message: (error === null || error === void 0 ? void 0 : error.message) || "Bermasalah",
+            success: false,
+        });
     }
 });
 exports.login = login;

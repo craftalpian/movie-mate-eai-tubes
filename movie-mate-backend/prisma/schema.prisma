@@ -17,7 +17,7 @@ datasource db {
 model user {
   user_id                     String        @id @unique
   full_name                   String
-  nik                         String
+  nim                         String
   session_mate                session_mate? @relation(fields: [session_mateSession_mate_id], references: [session_mate_id])
   session_mateSession_mate_id String?
   favourite                   favourite?    @relation(fields: [favouriteFavourite_id], references: [favourite_id])
@@ -25,14 +25,23 @@ model user {
 }
 
 model igracias {
-  nik        String   @id @unique
+  nim        String   @id @unique
   email      String
   full_name  String
   image_url  String?
-  client_api String
+  client_id  String
   cookie     String
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+}
+
+model api {
+  api_id        String   @id
+  client_id     String   @unique
+  client_secret String?
+  owner_name    String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
 }
 
 model movie {

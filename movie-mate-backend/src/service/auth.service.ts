@@ -42,53 +42,53 @@ class AuthService {
     const cookieString = await this.jar?.getSetCookieStrings(mainUrl);
     const cookie = `${cookieString.join("; ")};`;
 
-    if (cookie) {
-      const { data } = await axios.post(
-        mainUrl,
-        new URLSearchParams({
-          textUsername: username,
-          textPassword: password,
-          submit: "Login",
-        }),
-        {
-          headers: {
-            Cookie: `${cookie}`,
-            ...this.headers,
-          },
-        }
-      );
+    if (!cookieString) throw new Error("Cookie tidak ditemukan");
 
-      const $ = load(data);
-      const nim = $("title").text().split("\n")[1].split(" ")[0];
-      if (nim !== "i-GRACIAS") {
-        const { data: userData } = await axios.get(
-          "https://igracias.telkomuniversity.ac.id/index.php?pageid=2941",
-          {
-            headers: {
-              Cookie: `${cookie}`,
-              ...this.headers,
-            },
-          }
-        );
-        const fullname = userData
-          .split(
-            '<h5 class="centered" style="margin-bottom:5px !important;">'
-          )[1]
-          .split("</h5>")[0]
-          .replace("\r\n", "")
-          .trim();
-        const email = userData
-          .split("Email Anda</b></span>")[1]
-          .split("</span>")[0]
-          .split(">")[1]
-          .trim();
-
-        console.log({ nim, email, fullname });
-      } else {
-        console.log("error");
+    const { data } = await axios.post(
+      mainUrl,
+      new URLSearchParams({
+        textUsername: username,
+        textPassword: password,
+        submit: "Login",
+      }),
+      {
+        headers: {
+          Cookie: `${cookie}`,
+          ...this.headers,
+        },
       }
-    }
-    return {};
+    );
+
+    const $ = load(data);
+    const nim = $("title").text().split("\n")[1].split(" ")[0];
+
+    if (nim === "i-GRACIAS") throw new Error("Gagal masuk");
+
+    const { data: userData } = await axios.get(
+      "https://igracias.telkomuniversity.ac.id/index.php?pageid=2941",
+      {
+        headers: {
+          Cookie: `${cookie}`,
+          ...this.headers,
+        },
+      }
+    );
+    const fullname = userData
+      .split('<h5 class="centered" style="margin-bottom:5px !important;">')[1]
+      .split("</h5>")[0]
+      .replace("\r\n", "")
+      .trim();
+    const email = userData
+      .split("Email Anda</b></span>")[1]
+      .split("</span>")[0]
+      .split(">")[1]
+      .trim();
+
+    return {
+      full_name: fullname,
+      email,
+      nim,
+    };
   }
 }
 

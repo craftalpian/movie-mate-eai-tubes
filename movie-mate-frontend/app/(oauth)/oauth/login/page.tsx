@@ -2,6 +2,8 @@
 
 import { loginIgracias } from "@/app/(movie-mate)/_hooks/login-igracias";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 type Inputs = {
   username: string;
@@ -9,6 +11,8 @@ type Inputs = {
 };
 
 const LoginPage = () => {
+  const { replace } = useRouter();
+  const [error, setError] = useState<string | null>(null);
   const { mutateAsync: loginAsync } = loginIgracias();
   const {
     register,
@@ -17,13 +21,20 @@ const LoginPage = () => {
   } = useForm<Inputs>({
     mode: "onChange",
   });
+  const searchParams = useSearchParams();
+  const clientId = searchParams.get("client_id");
+  const callbackUrl = searchParams.get("callback_url");
+
+  if (!clientId || !callbackUrl)
+    return <p>Please set up your client_id and callback_url!</p>;
 
   const onSubmit: SubmitHandler<Inputs> = async ({
     username,
     password,
   }: any) => {
-    const data = await loginAsync({ username, password });
-    console.log({ data });
+    const data = await loginAsync({ username, password, client_id: clientId });
+
+    if (!data?.success) setError(data?.message);
   };
 
   return (
@@ -37,6 +48,11 @@ const LoginPage = () => {
               @craftalpian
             </a>
           </p>
+          {error && (
+            <div role="alert" className="alert alert-error">
+              <span>{error}</span>
+            </div>
+          )}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-4">
               <label className="input input-bordered flex items-center gap-2">
