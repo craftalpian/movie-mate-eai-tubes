@@ -12,4 +12,5 @@ router.get("/movie/:movie_id", controller_1.movieDetail);
 router.get("/city", controller_1.listAllCity);
 router.get("/schedule", controller_1.listAllSchedule);
 router.post("/auth/login", controller_1.login);
+router.get("/auth", controller_1.detail);
 exports.default = router;

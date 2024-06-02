@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = void 0;
+exports.detail = exports.login = void 0;
 const service_1 = require("../service");
 const authService = new service_1.AuthService();
 const apiService = new service_1.ApiService();
@@ -39,3 +39,32 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
+// check igracias
+const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { client_id } = req === null || req === void 0 ? void 0 : req.query;
+        let { cookie } = req === null || req === void 0 ? void 0 : req.headers;
+        cookie = decodeURIComponent((cookie === null || cookie === void 0 ? void 0 : cookie.split("igracias=")[1]) || "");
+        console.log({ cookie });
+        if (!cookie || !client_id)
+            throw new Error("Data kurang lengkap");
+        const apiData = yield apiService.apiDetail(client_id);
+        if (!apiData)
+            throw new Error("client_id not found");
+        const igraciasData = yield authService.detail({
+            cookie,
+        });
+        return res.status(200).json({
+            data: Object.assign(Object.assign({}, igraciasData), { api_owner: (apiData === null || apiData === void 0 ? void 0 : apiData.owner_name) || "-" }),
+            success: true,
+            message: "Berhasil Mengambil Data",
+        });
+    }
+    catch (error) {
+        return res.status(400).json({
+            message: (error === null || error === void 0 ? void 0 : error.message) || "Bermasalah",
+            success: false,
+        });
+    }
+});
+exports.detail = detail;

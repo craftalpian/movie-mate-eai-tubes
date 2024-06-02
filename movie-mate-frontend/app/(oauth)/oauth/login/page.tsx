@@ -36,9 +36,7 @@ const LoginPage = () => {
     password,
   }: any) => {
     const data = await loginAsync({ username, password, client_id: clientId });
-
     if (!data?.success) setError(data?.message);
-
     setFullName(data?.full_name);
     setOwnerName(data?.api_owner);
     setCookie(data?.cookie);

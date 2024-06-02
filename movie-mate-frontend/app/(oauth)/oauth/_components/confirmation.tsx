@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 const ConfirmationPage = ({
   callback_url,
   owner_name,
@@ -13,12 +11,12 @@ const ConfirmationPage = ({
   cookie: string;
   callback_url: string;
 }) => {
-  const { replace } = useRouter();
   const termsAndConditions = [
     `Anda menggunakan aplikasi yang terintegrasi dengan layanan ${owner_name}`,
     "Akun Anda akan digunakan sebagai tanda sah dalam autentikasi",
     "Kami tidak menyimpan kata sandi Anda",
     "Penyalahgunaan oleh pengguna OAuth dan/atau API di luar tanggungjawab kami",
+    "Anda hanya bisa terintegrasi dengan satu layanan OAuth, dan kami hanya menyimpan layanan OAuth paling terakhir yang Anda gunakan",
     "Segala kerusakan/cacat/masalah yang terjadi kedepannya sebelum/sedang/setelah menggunakan layanan kami di luar tanggungjawab kami",
   ];
 

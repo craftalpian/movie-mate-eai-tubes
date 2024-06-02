@@ -41,6 +41,57 @@ class AuthService {
             "Accept-Language": "en-US,en;q=0.9",
         };
     }
+    detail(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ cookie }) {
+            var _b;
+            const igraciasUser = yield this.prismaClient.igracias.findFirst({
+                where: {
+                    cookie,
+                },
+                select: {
+                    client_id: true,
+                    nim: true,
+                },
+            });
+            if (!igraciasUser)
+                throw new Error("Akun tidak ditemukan");
+            const { nim } = igraciasUser;
+            let cookieNew = (0, js_base64_1.decode)(cookie);
+            const { data: userData } = yield axios_1.default.get("https://igracias.telkomuniversity.ac.id/index.php?pageid=2941", {
+                headers: Object.assign({ Cookie: `${cookieNew}` }, this.headers),
+            });
+            const fullName = userData
+                .split('<h5 class="centered" style="margin-bottom:5px !important;">')[1]
+                .split("</h5>")[0]
+                .replace("\r\n", "")
+                .trim();
+            const email = userData
+                .split("Email Anda</b></span>")[1]
+                .split("</span>")[0]
+                .split(">")[1]
+                .trim();
+            const imageUrl = (_b = userData
+                .split('<img class="" src="')[1]
+                .split('"')[0]) === null || _b === void 0 ? void 0 : _b.trim();
+            yield this.prismaClient.igracias.update({
+                data: {
+                    email,
+                    full_name: fullName,
+                    image_url: imageUrl,
+                },
+                where: {
+                    nim,
+                },
+            });
+            return {
+                full_name: fullName,
+                email,
+                image_url: imageUrl,
+                nim,
+                cookie,
+            };
+        });
+    }
     login(_a) {
         return __awaiter(this, arguments, void 0, function* ({ password, username, client_id, }) {
             var _b, _c;
@@ -103,6 +154,7 @@ class AuthService {
                 full_name: fullName,
                 email,
                 nim,
+                image_url: imageUrl,
                 cookie: (0, js_base64_1.encode)(cookie),
             };
         });

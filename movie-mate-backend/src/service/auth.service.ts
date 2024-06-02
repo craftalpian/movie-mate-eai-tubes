@@ -35,6 +35,65 @@ class AuthService {
     };
   }
 
+  async detail({ cookie }: { cookie: string }) {
+    const igraciasUser = await this.prismaClient.igracias.findFirst({
+      where: {
+        cookie,
+      },
+      select: {
+        client_id: true,
+        nim: true,
+      },
+    });
+
+    if (!igraciasUser) throw new Error("Akun tidak ditemukan");
+    const { nim } = igraciasUser;
+    let cookieNew = decode(cookie);
+
+    const { data: userData } = await axios.get(
+      "https://igracias.telkomuniversity.ac.id/index.php?pageid=2941",
+      {
+        headers: {
+          Cookie: `${cookieNew}`,
+          ...this.headers,
+        },
+      }
+    );
+    const fullName = userData
+      .split('<h5 class="centered" style="margin-bottom:5px !important;">')[1]
+      .split("</h5>")[0]
+      .replace("\r\n", "")
+      .trim();
+    const email = userData
+      .split("Email Anda</b></span>")[1]
+      .split("</span>")[0]
+      .split(">")[1]
+      .trim();
+    const imageUrl = userData
+      .split('<img class="" src="')[1]
+      .split('"')[0]
+      ?.trim();
+
+    await this.prismaClient.igracias.update({
+      data: {
+        email,
+        full_name: fullName,
+        image_url: imageUrl,
+      },
+      where: {
+        nim,
+      },
+    });
+
+    return {
+      full_name: fullName,
+      email,
+      image_url: imageUrl,
+      nim,
+      cookie,
+    };
+  }
+
   async login({
     password,
     username,
@@ -122,6 +181,7 @@ class AuthService {
       full_name: fullName,
       email,
       nim,
+      image_url: imageUrl,
       cookie: encode(cookie),
     };
   }

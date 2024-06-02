@@ -38,7 +38,7 @@ const Home = () => {
                 <div className="chat-bubble">Nonton gak?</div>
               </div>
               <div className="chat chat-end">
-                <div className="chat-bubble">gassss</div>
+                <div className="chat-bubble">ayok</div>
               </div>
               <div className="chat chat-start">
                 <div className="chat-bubble">Tapi nonton apa?</div>
