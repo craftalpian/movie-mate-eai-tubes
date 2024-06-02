@@ -2,8 +2,9 @@
 
 import { loginIgracias } from "@/app/(movie-mate)/_hooks/login-igracias";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import ConfirmationPage from "../_components/confirmation";
 
 type Inputs = {
   username: string;
@@ -11,8 +12,10 @@ type Inputs = {
 };
 
 const LoginPage = () => {
-  const { replace } = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [cookie, setCookie] = useState<string | null>(null);
+  const [ownerName, setOwnerName] = useState<string | null>(null);
+  const [fullName, setFullName] = useState<string | null>(null);
   const { mutateAsync: loginAsync } = loginIgracias();
   const {
     register,
@@ -35,7 +38,21 @@ const LoginPage = () => {
     const data = await loginAsync({ username, password, client_id: clientId });
 
     if (!data?.success) setError(data?.message);
+
+    setFullName(data?.full_name);
+    setOwnerName(data?.api_owner);
+    setCookie(data?.cookie);
   };
+
+  if (ownerName && cookie && fullName)
+    return (
+      <ConfirmationPage
+        callback_url={callbackUrl}
+        cookie={cookie}
+        owner_name={ownerName}
+        full_name={fullName}
+      />
+    );
 
   return (
     <div className="max-w-sm w-full flex">

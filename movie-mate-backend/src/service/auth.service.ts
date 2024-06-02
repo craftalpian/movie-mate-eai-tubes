@@ -3,6 +3,7 @@ import axios from "axios";
 import { wrapper } from "axios-cookiejar-support";
 import { CookieJar } from "tough-cookie";
 import { load } from "cheerio";
+import { encode, decode } from "js-base64";
 
 class AuthService {
   private prismaClient;
@@ -34,7 +35,15 @@ class AuthService {
     };
   }
 
-  async login({ password, username }: { username: string; password: string }) {
+  async login({
+    password,
+    username,
+    client_id,
+  }: {
+    username: string;
+    password: string;
+    client_id: string;
+  }) {
     const mainUrl = "https://igracias.telkomuniversity.ac.id/";
     await this.axiosClient.get(mainUrl, {
       headers: this.headers,
@@ -73,7 +82,7 @@ class AuthService {
         },
       }
     );
-    const fullname = userData
+    const fullName = userData
       .split('<h5 class="centered" style="margin-bottom:5px !important;">')[1]
       .split("</h5>")[0]
       .replace("\r\n", "")
@@ -83,11 +92,37 @@ class AuthService {
       .split("</span>")[0]
       .split(">")[1]
       .trim();
+    const imageUrl = userData
+      .split('<img class="" src="')[1]
+      .split('"')[0]
+      ?.trim();
+
+    await this.prismaClient.igracias.upsert({
+      create: {
+        client_id,
+        cookie: encode(cookie),
+        email,
+        full_name: fullName,
+        image_url: imageUrl,
+        nim,
+      },
+      update: {
+        client_id,
+        cookie: encode(cookie),
+        email,
+        full_name: fullName,
+        image_url: imageUrl,
+      },
+      where: {
+        nim,
+      },
+    });
 
     return {
-      full_name: fullname,
+      full_name: fullName,
       email,
       nim,
+      cookie: encode(cookie),
     };
   }
 }

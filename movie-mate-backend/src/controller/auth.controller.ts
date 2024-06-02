@@ -10,9 +10,13 @@ const login = async (req: Request, res: Response) => {
     const { username, password, client_id } = req?.body;
     const apiData = await apiService.apiDetail(client_id);
     if (!apiData) throw new Error("client_id not found");
-    const igraciasData = await authService.login({ username, password });
+    const igraciasData = await authService.login({
+      username,
+      password,
+      client_id,
+    });
     return res.status(200).json({
-      data: igraciasData,
+      data: { ...igraciasData, api_owner: apiData?.owner_name || "-" },
       success: true,
       message: "Berhasil Masuk",
     });

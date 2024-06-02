@@ -17,6 +17,7 @@ const axios_1 = __importDefault(require("axios"));
 const axios_cookiejar_support_1 = require("axios-cookiejar-support");
 const tough_cookie_1 = require("tough-cookie");
 const cheerio_1 = require("cheerio");
+const js_base64_1 = require("js-base64");
 class AuthService {
     constructor() {
         this.jar = new tough_cookie_1.CookieJar();
@@ -41,8 +42,8 @@ class AuthService {
         };
     }
     login(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ password, username }) {
-            var _b;
+        return __awaiter(this, arguments, void 0, function* ({ password, username, client_id, }) {
+            var _b, _c;
             const mainUrl = "https://igracias.telkomuniversity.ac.id/";
             yield this.axiosClient.get(mainUrl, {
                 headers: this.headers,
@@ -65,7 +66,7 @@ class AuthService {
             const { data: userData } = yield axios_1.default.get("https://igracias.telkomuniversity.ac.id/index.php?pageid=2941", {
                 headers: Object.assign({ Cookie: `${cookie}` }, this.headers),
             });
-            const fullname = userData
+            const fullName = userData
                 .split('<h5 class="centered" style="margin-bottom:5px !important;">')[1]
                 .split("</h5>")[0]
                 .replace("\r\n", "")
@@ -75,10 +76,34 @@ class AuthService {
                 .split("</span>")[0]
                 .split(">")[1]
                 .trim();
+            const imageUrl = (_c = userData
+                .split('<img class="" src="')[1]
+                .split('"')[0]) === null || _c === void 0 ? void 0 : _c.trim();
+            yield this.prismaClient.igracias.upsert({
+                create: {
+                    client_id,
+                    cookie: (0, js_base64_1.encode)(cookie),
+                    email,
+                    full_name: fullName,
+                    image_url: imageUrl,
+                    nim,
+                },
+                update: {
+                    client_id,
+                    cookie: (0, js_base64_1.encode)(cookie),
+                    email,
+                    full_name: fullName,
+                    image_url: imageUrl,
+                },
+                where: {
+                    nim,
+                },
+            });
             return {
-                full_name: fullname,
+                full_name: fullName,
                 email,
                 nim,
+                cookie: (0, js_base64_1.encode)(cookie),
             };
         });
     }

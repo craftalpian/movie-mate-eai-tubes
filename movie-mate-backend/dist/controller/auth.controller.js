@@ -20,9 +20,13 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const apiData = yield apiService.apiDetail(client_id);
         if (!apiData)
             throw new Error("client_id not found");
-        const igraciasData = yield authService.login({ username, password });
+        const igraciasData = yield authService.login({
+            username,
+            password,
+            client_id,
+        });
         return res.status(200).json({
-            data: igraciasData,
+            data: Object.assign(Object.assign({}, igraciasData), { api_owner: (apiData === null || apiData === void 0 ? void 0 : apiData.owner_name) || "-" }),
             success: true,
             message: "Berhasil Masuk",
         });
