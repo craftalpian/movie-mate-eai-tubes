@@ -11,9 +11,9 @@ const ConfirmationPage = () => {
       <div className="card bg-base-100 shadow-xl m-auto">
         <div className="card-body">
           <h2 className="card-title">Terms and Conditions</h2>
-          <div className="space-y-4 my-2 bg-gray-100 p-4 max-h-48 overflow-y-auto">
+          <div className="space-y-4 my-2 bg-gray-100 p-4 max-h-64 overflow-y-auto">
             {termsAndConditions?.map((text) => (
-              <div className="inline-flex gap-x-2">
+              <div className="inline-flex gap-x-2" key={text}>
                 <input
                   type="checkbox"
                   className="checkbox checkbox-sm"
