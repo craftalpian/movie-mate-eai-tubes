@@ -4,6 +4,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 export interface IConfigState {
   movie_id: null | string;
   city_id: null | string;
+  movie_theater_id: null | string;
   movies: any[] | null;
   theaters: any[] | null;
   cities: any[] | null;
@@ -13,6 +14,7 @@ export interface IConfigState {
 const initialState: IConfigState = {
   movie_id: null,
   city_id: null,
+  movie_theater_id: null,
   movies: null,
   theaters: null,
   cities: null,
@@ -41,6 +43,9 @@ export const configSlice = createSlice({
     setMovie: (state, action: PayloadAction<any | null>) => {
       state.movie = action.payload;
     },
+    setMovieTheaterId: (state, action: PayloadAction<any | null>) => {
+      state.movie_theater_id = action.payload;
+    },
   },
 });
 
@@ -51,5 +56,6 @@ export const {
   setTheaters,
   setCities,
   setMovie,
+  setMovieTheaterId,
 } = configSlice.actions;
 export const configReducer = configSlice.reducer;

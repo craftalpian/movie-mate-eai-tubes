@@ -16,5 +16,6 @@ export const getAllMovie = () => {
       dispatch(setMovies(data?.data));
     },
     queryKey: ["GetAllMovie", configState?.city_id],
+    enabled: !!configState?.city_id,
   });
 };

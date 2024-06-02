@@ -1,13 +1,15 @@
 "use client";
 
-import { useAppSelector } from "../_lib/store";
-import moment from "moment-timezone";
-import { formatToRupiah } from "../_utils";
+import { getAllSchedule } from "../_hooks/schedule";
+import { setMovieTheaterId } from "../_lib/reducer/config.reducer";
+import { useAppDispatch, useAppSelector } from "../_lib/store";
+import { formatToRupiah, indonesianTimestamp } from "../_utils";
 
 const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
   const configState = useAppSelector((state) => state);
-  moment.tz.setDefault("Asia/Jakarta");
-  const today = moment().format("dddd");
+  const today = indonesianTimestamp().format("dddd");
+  const dispatch = useAppDispatch();
+  const { refetch: refetchSchedule, data: dataSchedule } = getAllSchedule();
 
   return (
     <div
@@ -42,17 +44,37 @@ const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
       )}
       <div className="card-body px-4">
         <h2 className="card-title">
-          {isLoading ? <div className="skeleton h-8 w-40"></div> : configState?.movie?.title}
+          {isLoading ? (
+            <div className="skeleton h-8 w-40"></div>
+          ) : (
+            configState?.movie?.title
+          )}
         </h2>
         <p className="text-left mb-4">
-          {isLoading ? <div className="skeleton h-16 w-64"></div> : configState?.movie?.synopsis}
+          {isLoading ? (
+            <div className="skeleton h-16 w-64"></div>
+          ) : (
+            configState?.movie?.synopsis
+          )}
         </p>
         {!isLoading && (
           <>
             {(configState?.theaters || [])?.map(
-              ({ theater_name, weekday_price, weekend_price, theater_id }) => (
-                <div className="collapse collapse-arrow bg-base-200 outline-none" key={theater_id}>
-                  <input type="checkbox" name="my-accordion-2" />
+              ({
+                theater_name,
+                weekday_price,
+                weekend_price,
+                theater_id,
+                movie_theater_id,
+              }) => (
+                <div
+                  className="collapse collapse-arrow bg-base-200 outline-none"
+                  key={theater_id}
+                  onClick={() => {
+                    dispatch(setMovieTheaterId(movie_theater_id));
+                  }}
+                >
+                  <input type="radio" name="my-accordion-2" />
                   <div className="collapse-title text-xl font-medium capitalize">
                     🎥 {theater_name} <br />
                     <div className="badge badge-neutral">
@@ -64,35 +86,47 @@ const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
                   <div className="collapse-content mt-0">
                     <div className="divider mt-0"></div>
 
-                    <div className="collapse bg-base-300">
-                      <input type="checkbox" name="my-accordion-1" />
-                      <div className="collapse-title text-xl font-medium">
-                        ⏰ Jam 21.15
-                        <button className="btn btn-sm disabled self-end ml-2">
-                          Normal
-                        </button>
-                      </div>
-                      <div className="collapse-content">
-                        <div className="flex items-center gap-3">
-                          <div className="avatar">
-                            <div className="mask mask-squircle w-10 h-10">
-                              <img
-                                src="https://img.daisyui.com/tailwind-css-component-profile-2@56w.png"
-                                alt="Avatar Tailwind CSS Component"
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <div className="font-bold">Hart Hagerty</div>
-                            <div className="text-sm opacity-50">
-                              United States
-                            </div>
-                          </div>
+                    {isLoading ||
+                      (!dataSchedule && (
+                        <div className="flex items-center justify-center">
+                          <span className="loading loading-spinner loading-lg"></span>
                         </div>
-                        <button className="btn btn-block mt-4">
-                          Ikut Nonton!
-                        </button>
-                      </div>
+                      ))}
+                    <div className="space-y-4">
+                      {!isLoading &&
+                        dataSchedule &&
+                        dataSchedule?.map(({ start_time }: any) => (
+                          <div className="collapse bg-base-300">
+                            <input type="radio" name="my-accordion-1" />
+                            <div className="collapse-title text-xl font-medium">
+                              ⏰ Jam {start_time}
+                              <button className="btn btn-sm disabled self-end ml-2">
+                                Normal
+                              </button>
+                            </div>
+                            <div className="collapse-content">
+                              <div className="flex items-center gap-3">
+                                <div className="avatar">
+                                  <div className="mask mask-squircle w-10 h-10">
+                                    <img
+                                      src="https://img.daisyui.com/tailwind-css-component-profile-2@56w.png"
+                                      alt="Avatar Tailwind CSS Component"
+                                    />
+                                  </div>
+                                </div>
+                                <div>
+                                  <div className="font-bold">Hart Hagerty</div>
+                                  <div className="text-sm opacity-50">
+                                    United States
+                                  </div>
+                                </div>
+                              </div>
+                              <button className="btn btn-block mt-4">
+                                Ikut Nonton!
+                              </button>
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 </div>

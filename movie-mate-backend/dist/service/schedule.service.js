@@ -15,9 +15,20 @@ class ScheduleService {
         this.prismaClient = new client_1.PrismaClient();
     }
     scheduleList(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ city_id, movie_id, }) {
-            return yield this.prismaClient
-                .$queryRaw `select * from daily_movie_schedule where city_id = ${city_id} and movie_id = ${movie_id};`;
+        return __awaiter(this, arguments, void 0, function* ({ movie_theater_id, start_timestamp, }) {
+            return yield this.prismaClient.schedule.findMany({
+                where: {
+                    movie_theater_id,
+                    start_timestamp: {
+                        gte: start_timestamp,
+                    },
+                },
+                select: {
+                    start_timestamp: true,
+                    schedule_id: true,
+                    start_time: true,
+                },
+            });
         });
     }
 }

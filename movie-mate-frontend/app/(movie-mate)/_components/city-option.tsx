@@ -1,12 +1,9 @@
 "use client";
 
-import moment from "moment";
-import "moment-timezone";
 import { useAppSelector } from "../_lib/store";
+import { indonesianTimestamp } from "../_utils";
 
 const CityOption = ({ onClick }: { onClick: (cityId: string) => void }) => {
-  moment.locale("id");
-  const jakartaTime = moment.tz("Asia/Jakarta");
   const configState = useAppSelector((state) => state);
 
   const cities = (configState?.cities ?? [])?.filter(({ name }) =>
@@ -15,7 +12,7 @@ const CityOption = ({ onClick }: { onClick: (cityId: string) => void }) => {
 
   return (
     <div className="flex flex-row w-full justify-between items-center mb-4">
-      <h2 className="card-title">{jakartaTime.format("LL")}</h2>
+      <h2 className="card-title">{indonesianTimestamp().format("LL")}</h2>
       <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn m-1">
           {configState.city_id

@@ -14,10 +14,10 @@ const service_1 = require("../service");
 const scheduleService = new service_1.ScheduleService();
 const listAllSchedule = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { city_id, movie_id } = req === null || req === void 0 ? void 0 : req.query;
+        const { movie_theater_id, start_timestamp } = req === null || req === void 0 ? void 0 : req.query;
         const allSchedule = yield scheduleService.scheduleList({
-            city_id,
-            movie_id,
+            movie_theater_id,
+            start_timestamp,
         });
         return res.status(200).json({ data: allSchedule });
     }

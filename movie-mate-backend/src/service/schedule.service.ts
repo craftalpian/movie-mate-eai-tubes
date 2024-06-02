@@ -8,14 +8,25 @@ class ScheduleService {
   }
 
   async scheduleList({
-    city_id,
-    movie_id,
+    movie_theater_id,
+    start_timestamp,
   }: {
-    city_id: string;
-    movie_id: string;
+    movie_theater_id: string;
+    start_timestamp: string;
   }) {
-    return await this.prismaClient
-      .$queryRaw`select * from daily_movie_schedule where city_id = ${city_id} and movie_id = ${movie_id};`;
+    return await this.prismaClient.schedule.findMany({
+      where: {
+        movie_theater_id,
+        start_timestamp: {
+          gte: start_timestamp,
+        },
+      },
+      select: {
+        start_timestamp: true,
+        schedule_id: true,
+        start_time: true,
+      },
+    });
   }
 }
 

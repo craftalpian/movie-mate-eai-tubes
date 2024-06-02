@@ -5,10 +5,10 @@ const scheduleService = new ScheduleService();
 
 const listAllSchedule = async (req: Request, res: Response) => {
   try {
-    const { city_id, movie_id }: any = req?.query;
+    const { movie_theater_id, start_timestamp }: any = req?.query;
     const allSchedule = await scheduleService.scheduleList({
-      city_id,
-      movie_id,
+      movie_theater_id,
+      start_timestamp,
     });
     return res.status(200).json({ data: allSchedule });
   } catch (error) {

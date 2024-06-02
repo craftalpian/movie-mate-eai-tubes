@@ -17,7 +17,7 @@ class TheaterService {
     theaterList(_a) {
         return __awaiter(this, arguments, void 0, function* ({ city_id, movie_id, }) {
             return yield this.prismaClient
-                .$queryRaw `select distinct theater_name, theater_id, weekday_price, weekend_price from daily_movie_schedule where city_id = ${city_id} and movie_id = ${movie_id};`;
+                .$queryRaw `select distinct theater_name, theater_id, weekday_price, weekend_price, movie_theater_id from daily_movie_schedule where city_id = ${city_id} and movie_id = ${movie_id};`;
         });
     }
 }
