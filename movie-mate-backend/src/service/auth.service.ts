@@ -40,7 +40,7 @@ class AuthService {
       headers: this.headers,
     });
     const cookieString = await this.jar?.getSetCookieStrings(mainUrl);
-    const cookie = cookieString.join("; ");
+    const cookie = `${cookieString.join("; ")};`;
 
     if (cookie) {
       const { data } = await axios.post(
@@ -74,9 +74,16 @@ class AuthService {
           .split(
             '<h5 class="centered" style="margin-bottom:5px !important;">'
           )[1]
-          .split("</h5>")[0];
+          .split("</h5>")[0]
+          .replace("\r\n", "")
+          .trim();
+        const email = userData
+          .split("Email Anda</b></span>")[1]
+          .split("</span>")[0]
+          .split(">")[1]
+          .trim();
 
-        console.log({ nim, userData, fullname });
+        console.log({ nim, email, fullname });
       } else {
         console.log("error");
       }

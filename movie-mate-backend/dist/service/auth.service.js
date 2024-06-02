@@ -48,7 +48,7 @@ class AuthService {
                 headers: this.headers,
             });
             const cookieString = yield ((_b = this.jar) === null || _b === void 0 ? void 0 : _b.getSetCookieStrings(mainUrl));
-            const cookie = cookieString.join("; ");
+            const cookie = `${cookieString.join("; ")};`;
             if (cookie) {
                 const { data } = yield axios_1.default.post(mainUrl, new URLSearchParams({
                     textUsername: username,
@@ -63,7 +63,17 @@ class AuthService {
                     const { data: userData } = yield axios_1.default.get("https://igracias.telkomuniversity.ac.id/index.php?pageid=2941", {
                         headers: Object.assign({ Cookie: `${cookie}` }, this.headers),
                     });
-                    console.log({ nim, userData });
+                    const fullname = userData
+                        .split('<h5 class="centered" style="margin-bottom:5px !important;">')[1]
+                        .split("</h5>")[0]
+                        .replace("\r\n", "")
+                        .trim();
+                    const email = userData
+                        .split("Email Anda</b></span>")[1]
+                        .split("</span>")[0]
+                        .split(">")[1]
+                        .trim();
+                    console.log({ nim, email, fullname });
                 }
                 else {
                     console.log("error");
