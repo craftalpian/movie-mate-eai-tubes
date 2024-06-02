@@ -34,7 +34,7 @@ class AuthService {
     };
   }
 
-  async login() {
+  async login({ password, username }: { username: string; password: string }) {
     const mainUrl = "https://igracias.telkomuniversity.ac.id/";
     await this.axiosClient.get(mainUrl, {
       headers: this.headers,
@@ -43,11 +43,11 @@ class AuthService {
     const cookie = cookieString.join("; ");
 
     if (cookie) {
-      console.log({ cookie });
       const { data } = await axios.post(
         mainUrl,
         new URLSearchParams({
-          textUsername: "alfiananandaputra",
+          textUsername: username,
+          textPassword: password,
           submit: "Login",
         }),
         {
@@ -61,11 +61,25 @@ class AuthService {
       const $ = load(data);
       const nim = $("title").text().split("\n")[1].split(" ")[0];
       if (nim !== "i-GRACIAS") {
-        console.log({ nim });
+        const { data: userData } = await axios.get(
+          "https://igracias.telkomuniversity.ac.id/index.php?pageid=2941",
+          {
+            headers: {
+              Cookie: `${cookie}`,
+              ...this.headers,
+            },
+          }
+        );
+        const fullname = userData
+          .split(
+            '<h5 class="centered" style="margin-bottom:5px !important;">'
+          )[1]
+          .split("</h5>")[0];
+
+        console.log({ nim, userData, fullname });
       } else {
         console.log("error");
       }
-      // console.log({ titleText });
     }
     return {};
   }

@@ -40,20 +40,19 @@ class AuthService {
             "Accept-Language": "en-US,en;q=0.9",
         };
     }
-    login() {
-        return __awaiter(this, void 0, void 0, function* () {
-            var _a;
+    login(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ password, username }) {
+            var _b;
             const mainUrl = "https://igracias.telkomuniversity.ac.id/";
             yield this.axiosClient.get(mainUrl, {
                 headers: this.headers,
             });
-            const cookieString = yield ((_a = this.jar) === null || _a === void 0 ? void 0 : _a.getSetCookieStrings(mainUrl));
+            const cookieString = yield ((_b = this.jar) === null || _b === void 0 ? void 0 : _b.getSetCookieStrings(mainUrl));
             const cookie = cookieString.join("; ");
             if (cookie) {
-                console.log({ cookie });
                 const { data } = yield axios_1.default.post(mainUrl, new URLSearchParams({
-                    textUsername: "alfiananandaputra",
-                    textPassword: "ALFIANap123!",
+                    textUsername: username,
+                    textPassword: password,
                     submit: "Login",
                 }), {
                     headers: Object.assign({ Cookie: `${cookie}` }, this.headers),
@@ -61,12 +60,14 @@ class AuthService {
                 const $ = (0, cheerio_1.load)(data);
                 const nim = $("title").text().split("\n")[1].split(" ")[0];
                 if (nim !== "i-GRACIAS") {
-                    console.log({ nim });
+                    const { data: userData } = yield axios_1.default.get("https://igracias.telkomuniversity.ac.id/index.php?pageid=2941", {
+                        headers: Object.assign({ Cookie: `${cookie}` }, this.headers),
+                    });
+                    console.log({ nim, userData });
                 }
                 else {
                     console.log("error");
                 }
-                // console.log({ titleText });
             }
             return {};
         });

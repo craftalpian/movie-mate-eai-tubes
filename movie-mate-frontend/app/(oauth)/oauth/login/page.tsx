@@ -1,5 +1,6 @@
 "use client";
 
+import { loginIgracias } from "@/app/(movie-mate)/_hooks/login-igracias";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type Inputs = {
@@ -8,6 +9,7 @@ type Inputs = {
 };
 
 const LoginPage = () => {
+  const { mutateAsync: loginAsync } = loginIgracias();
   const {
     register,
     handleSubmit,
@@ -15,7 +17,14 @@ const LoginPage = () => {
   } = useForm<Inputs>({
     mode: "onChange",
   });
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const onSubmit: SubmitHandler<Inputs> = async ({
+    username,
+    password,
+  }: any) => {
+    const data = await loginAsync({ username, password });
+    console.log({ data });
+  };
 
   return (
     <div className="max-w-sm w-full flex">

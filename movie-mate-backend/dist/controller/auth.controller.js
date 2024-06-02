@@ -14,9 +14,13 @@ const service_1 = require("../service");
 const authService = new service_1.AuthService();
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield authService.login();
+        const { username, password } = req === null || req === void 0 ? void 0 : req.body;
+        console.log({ username, password });
+        yield authService.login({ username, password });
         return res.json({ data: {} });
     }
-    catch (error) { }
+    catch (error) {
+        console.error({ error });
+    }
 });
 exports.login = login;
