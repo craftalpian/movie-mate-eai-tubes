@@ -17,6 +17,11 @@ const listAllCity = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const allCity = yield cityService.allCity();
         return res.json({ data: allCity });
     }
-    catch (error) { }
+    catch (error) {
+        return res.status(400).json({
+            message: (error === null || error === void 0 ? void 0 : error.message) || "Bermasalah",
+            success: false,
+        });
+    }
 });
 exports.listAllCity = listAllCity;

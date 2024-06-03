@@ -13,7 +13,6 @@ exports.detail = exports.login = void 0;
 const service_1 = require("../service");
 const authService = new service_1.AuthService();
 const apiService = new service_1.ApiService();
-// login igracias
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, password, client_id } = req === null || req === void 0 ? void 0 : req.body;
@@ -39,7 +38,6 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
-// check igracias
 const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { client_id } = req === null || req === void 0 ? void 0 : req.query;

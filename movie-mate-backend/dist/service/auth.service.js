@@ -21,7 +21,6 @@ class AuthService {
         this.prismaClient = new client_1.PrismaClient();
         this.headers = {
             Host: "igracias.telkomuniversity.ac.id",
-            // "Cache-Control": "max-age=0",
             "Cache-Control": "no-cache, no-store, must-revalidate",
             Pragma: "no-cache",
             Expires: "0",

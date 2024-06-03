@@ -30,7 +30,9 @@ const listAllSchedule = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.listAllSchedule = listAllSchedule;
-const watchMovieBySchedule = (req, res, webSocketService) => __awaiter(void 0, void 0, void 0, function* () {
+const watchMovieBySchedule = (req, res
+// webSocketService: WebSocketService
+) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { schedule_id } = req === null || req === void 0 ? void 0 : req.params;
         let { cookie } = req === null || req === void 0 ? void 0 : req.headers;
@@ -39,7 +41,7 @@ const watchMovieBySchedule = (req, res, webSocketService) => __awaiter(void 0, v
         if (!nim)
             throw new Error("Harap login");
         yield scheduleService.joinSchedule({ nim, schedule_id });
-        webSocketService.sendMessageToClients("tessss");
+        // webSocketService.sendMessageToClients("tessss");
         return res.status(200).json({ status: true });
     }
     catch (error) {
