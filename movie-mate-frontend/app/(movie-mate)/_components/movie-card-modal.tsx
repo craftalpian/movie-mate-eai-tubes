@@ -13,7 +13,7 @@ const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
   const configState = useAppSelector((state) => state);
   const today = indonesianTimestamp().format("dddd");
   const dispatch = useAppDispatch();
-  const { refetch: refetchSchedule, data: dataSchedule } = getAllSchedule();
+  const { data: dataSchedule } = getAllSchedule();
   const { mutateAsync: createWatchMovie } = watchMovie();
   const { mutateAsync: favourite } = createFavourite();
   const { mutateAsync: unfavourite } = deleteFavourite();
@@ -36,8 +36,12 @@ const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
-          fill={configState?.movie?.favourite_by_me ? "#ff5861" : "currentcolor"}
-          stroke={configState?.movie?.favourite_by_me ? "#ff5861" : "currentcolor"}
+          fill={
+            configState?.movie?.favourite_by_me ? "#ff5861" : "currentcolor"
+          }
+          stroke={
+            configState?.movie?.favourite_by_me ? "#ff5861" : "currentcolor"
+          }
           viewBox="0 0 24 24"
         >
           <path
@@ -47,7 +51,9 @@ const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
             d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
           />
         </svg>
-        {configState?.movie?.total_favourite > 0 ? configState?.movie?.total_favourite : ""}
+        {configState?.movie?.total_favourite > 0
+          ? configState?.movie?.total_favourite
+          : ""}
       </button>
       {isLoading ? (
         <div className="aspect-square object-cover bg-gray-400 rounded-t-2xl w-full h-72 skeleton" />

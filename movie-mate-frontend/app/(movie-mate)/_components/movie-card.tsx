@@ -1,8 +1,5 @@
 "use client";
 import clsx from "clsx";
-// import { useAppSelector } from "../_lib/store";
-// import { createFavourite } from "../_hooks/add-favourite";
-// import { deleteFavourite } from "../_hooks/remove-favourite";
 
 const MovieCard = ({
   title,
@@ -11,10 +8,8 @@ const MovieCard = ({
   onClickMovie,
   movieId,
   type,
-  isLike = false,
   totalLike = 0,
 }: {
-  isLike?: boolean;
   totalLike?: number;
   title: string;
   imageUrl: string;
@@ -28,10 +23,7 @@ const MovieCard = ({
       onClick={() => onClickMovie(movieId)}
       className="card w-full bg-base-100 shadow-xl hover:border hover:shadow-2xl cursor-pointer relative"
     >
-      <button
-        className={clsx("btn absolute top-0 right-0 bg-glass mt-2 mr-2")}
-        
-      >
+      <button className={clsx("btn absolute top-0 right-0 bg-glass mt-2 mr-2")}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"

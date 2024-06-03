@@ -17,7 +17,6 @@ export const getAllSchedule = () => {
           "YYYY-MM-DD"
         )}T00:00:00.00Z`
       );
-
       return data?.data;
     },
     queryKey: ["GetAllSchedule", configState?.movie_theater_id],

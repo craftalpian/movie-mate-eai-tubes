@@ -16,7 +16,6 @@ const MovieList = ({
           synopsis,
           movie_id,
           type,
-          favourite_by_me,
           total_favourite,
         }: any) => (
           <MovieCard
@@ -27,7 +26,6 @@ const MovieList = ({
             movieId={movie_id}
             type={type}
             onClickMovie={(movieId) => onClick(movieId)}
-            isLike={favourite_by_me}
             totalLike={total_favourite}
           />
         )

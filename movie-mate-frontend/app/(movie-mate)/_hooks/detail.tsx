@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useQuery } from "react-query";
-import { parseCookies, setCookie, destroyCookie } from "nookies";
+import { parseCookies } from "nookies";
 import { useAppDispatch } from "../_lib/store";
 import { setNim } from "../_lib/reducer/config.reducer";
 

@@ -9,8 +9,6 @@ import { getMovie } from "./_hooks/movie";
 import { useAppDispatch, useAppSelector } from "./_lib/store";
 import { setCityId, setMovieId } from "./_lib/reducer/config.reducer";
 import { getAllTheater } from "./_hooks/theaters";
-import { useEffect } from "react";
-import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -19,22 +17,6 @@ const Home = () => {
   const { isLoading: citiesLoading } = getAllCity();
   const { isLoading: isLoadingMovieData, refetch: refetchMovie } = getMovie();
   const { refetch: refetchTheaters } = getAllTheater();
-
-  useEffect(() => {
-    const client = new W3CWebSocket("ws://localhost:1000");
-
-    client.onopen = () => {
-      console.log("Koneksi ke WebSocket berhasil dibuat");
-    };
-
-    client.onmessage = (message: any) => {
-      console.log("Pesan dari server:", message.data);
-    };
-
-    return () => {
-      client.close();
-    };
-  }, []);
 
   if (moviesLoading || citiesLoading) return <div />;
 

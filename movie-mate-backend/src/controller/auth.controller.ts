@@ -4,7 +4,6 @@ import { ApiService, AuthService } from "../service";
 const authService = new AuthService();
 const apiService = new ApiService();
 
-// login igracias
 const login = async (req: Request, res: Response) => {
   try {
     const { username, password, client_id } = req?.body;
@@ -28,7 +27,6 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
-// check igracias
 const detail = async (req: Request, res: Response) => {
   try {
     const { client_id }: any = req?.query;

@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 import { load } from "cheerio";
 import { encode, decode } from "js-base64";
-import { delay } from "../utils";
 
 class AuthService {
   private prismaClient;
@@ -12,7 +11,6 @@ class AuthService {
     this.prismaClient = new PrismaClient();
     this.headers = {
       Host: "igracias.telkomuniversity.ac.id",
-      // "Cache-Control": "max-age=0",
       "Cache-Control": "no-cache, no-store, must-revalidate",
       Pragma: "no-cache",
       Expires: "0",
