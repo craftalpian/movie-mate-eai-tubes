@@ -4,6 +4,7 @@ import TheaterService from "./theater.service";
 import ScheduleService from "./schedule.service";
 import AuthService from "./auth.service";
 import ApiService from "./api.service";
+import WebSocketService from "./wss.service";
 
 export {
   MovieService,
@@ -12,4 +13,5 @@ export {
   ScheduleService,
   AuthService,
   ApiService,
+  WebSocketService,
 };

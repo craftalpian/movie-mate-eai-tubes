@@ -7,16 +7,15 @@ import { getAllSchedule } from "./schedule";
 import { getAllMovie } from "./movies";
 import { getMovie } from "./movie";
 
-export const createFavourite = () => {
+export const deleteFavourite = () => {
   const cookies = parseCookies();
   const { refetch: refetchSchedule } = getAllSchedule();
   const { refetch: refetchMovies } = getAllMovie();
   const { refetch: refetchMovie } = getMovie();
   return useMutation({
     mutationFn: async ({ movie_id }: { movie_id: string }) => {
-      const { data } = await axios.post(
+      const { data } = await axios.delete(
         `/backend/movie/${movie_id}/favourite`,
-        {},
         {
           headers: {
             cookie: cookies?.igracias,
@@ -28,6 +27,6 @@ export const createFavourite = () => {
       refetchMovie();
       return data;
     },
-    mutationKey: ["AddFavourite"],
+    mutationKey: ["RemoveFavourite"],
   });
 };

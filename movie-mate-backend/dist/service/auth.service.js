@@ -59,18 +59,17 @@ class AuthService {
             const { data: userData } = yield axios_1.default.get("https://igracias.telkomuniversity.ac.id/index.php?pageid=2941", {
                 headers: Object.assign({ Cookie: `${cookieNew}` }, this.headers),
             });
-            const fullName = userData
-                .split('<h5 class="centered" style="margin-bottom:5px !important;">')[1]
+            const fullName = ((userData === null || userData === void 0 ? void 0 : userData.split('<h5 class="centered" style="margin-bottom:5px !important;">')[1]) || "")
                 .split("</h5>")[0]
                 .replace("\r\n", "")
                 .trim();
-            const email = userData
-                .split("Email Anda</b></span>")[1]
+            if (fullName.length < 1)
+                return { nim: null };
+            const email = ((userData === null || userData === void 0 ? void 0 : userData.split("Email Anda</b></span>")[1]) || "")
                 .split("</span>")[0]
                 .split(">")[1]
                 .trim();
-            const imageUrl = (_b = userData
-                .split('<img class="" src="')[1]
+            const imageUrl = (_b = ((userData === null || userData === void 0 ? void 0 : userData.split('<img class="" src="')[1]) || "")
                 .split('"')[0]) === null || _b === void 0 ? void 0 : _b.trim();
             yield this.prismaClient.igracias.update({
                 data: {

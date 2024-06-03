@@ -10,7 +10,15 @@ const MovieList = ({
   return (
     <div className="space-y-8">
       {moviesData?.map(
-        ({ title, image_url, synopsis, movie_id, type }: any) => (
+        ({
+          title,
+          image_url,
+          synopsis,
+          movie_id,
+          type,
+          favourite_by_me,
+          total_favourite,
+        }: any) => (
           <MovieCard
             imageUrl={image_url}
             title={title}
@@ -19,6 +27,8 @@ const MovieList = ({
             movieId={movie_id}
             type={type}
             onClickMovie={(movieId) => onClick(movieId)}
+            isLike={favourite_by_me}
+            totalLike={total_favourite}
           />
         )
       )}

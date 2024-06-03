@@ -1,10 +1,13 @@
 "use client";
 
+import clsx from "clsx";
 import { getAllSchedule } from "../_hooks/schedule";
 import { watchMovie } from "../_hooks/watch-movie";
 import { setMovieTheaterId } from "../_lib/reducer/config.reducer";
 import { useAppDispatch, useAppSelector } from "../_lib/store";
 import { formatToRupiah, indonesianTimestamp } from "../_utils";
+import { createFavourite } from "../_hooks/add-favourite";
+import { deleteFavourite } from "../_hooks/remove-favourite";
 
 const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
   const configState = useAppSelector((state) => state);
@@ -12,19 +15,30 @@ const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
   const dispatch = useAppDispatch();
   const { refetch: refetchSchedule, data: dataSchedule } = getAllSchedule();
   const { mutateAsync: createWatchMovie } = watchMovie();
+  const { mutateAsync: favourite } = createFavourite();
+  const { mutateAsync: unfavourite } = deleteFavourite();
 
   return (
     <div
       onClick={() => {}}
       className="modal-box bg-base-100 shadow-xl mx-6 p-0 max-w-sm"
     >
-      <button className="btn absolute top-0 right-0 bg-glass mt-2 mr-2">
+      <button
+        className="btn absolute top-0 right-0 bg-glass mt-2 mr-2"
+        onClick={async () => {
+          if (configState?.movie?.favourite_by_me) {
+            await unfavourite({ movie_id: configState?.movie_id || "" });
+          } else {
+            await favourite({ movie_id: configState?.movie_id || "" });
+          }
+        }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
-          fill="none"
+          fill={configState?.movie?.favourite_by_me ? "#ff5861" : "currentcolor"}
+          stroke={configState?.movie?.favourite_by_me ? "#ff5861" : "currentcolor"}
           viewBox="0 0 24 24"
-          stroke="currentColor"
         >
           <path
             strokeLinecap="round"
@@ -33,6 +47,7 @@ const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
             d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
           />
         </svg>
+        {configState?.movie?.total_favourite > 0 ? configState?.movie?.total_favourite : ""}
       </button>
       {isLoading ? (
         <div className="aspect-square object-cover bg-gray-400 rounded-t-2xl w-full h-72 skeleton" />
@@ -146,12 +161,17 @@ const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
                                     ({ nim }: any) => nim == configState?.nim
                                   )?.length < 1 && (
                                     <button
-                                      className="btn btn-block mt-4"
+                                      className={clsx(
+                                        "btn btn-block mt-4",
+                                        !configState?.nim && "btn-disabled"
+                                      )}
                                       onClick={async () => {
                                         await createWatchMovie({ schedule_id });
                                       }}
                                     >
-                                      {mates?.length > 0
+                                      {!configState?.nim
+                                        ? "Harap masuk!"
+                                        : mates?.length > 0
                                         ? "Ikut Nonton!"
                                         : "Gas Nonton!"}
                                     </button>

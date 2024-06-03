@@ -59,18 +59,20 @@ class AuthService {
         },
       }
     );
-    const fullName = userData
-      .split('<h5 class="centered" style="margin-bottom:5px !important;">')[1]
+    const fullName = (
+      userData?.split(
+        '<h5 class="centered" style="margin-bottom:5px !important;">'
+      )[1] || ""
+    )
       .split("</h5>")[0]
       .replace("\r\n", "")
       .trim();
-    const email = userData
-      .split("Email Anda</b></span>")[1]
+    if (fullName.length < 1) return { nim: null };
+    const email = (userData?.split("Email Anda</b></span>")[1] || "")
       .split("</span>")[0]
       .split(">")[1]
       .trim();
-    const imageUrl = userData
-      .split('<img class="" src="')[1]
+    const imageUrl = (userData?.split('<img class="" src="')[1] || "")
       .split('"')[0]
       ?.trim();
 

@@ -30,13 +30,16 @@ const listAllSchedule = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.listAllSchedule = listAllSchedule;
-const watchMovieBySchedule = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const watchMovieBySchedule = (req, res, webSocketService) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { schedule_id } = req === null || req === void 0 ? void 0 : req.params;
         let { cookie } = req === null || req === void 0 ? void 0 : req.headers;
         cookie = decodeURIComponent((cookie === null || cookie === void 0 ? void 0 : cookie.split("igracias=")[1]) || "");
         const { nim } = yield authService.detail({ cookie });
+        if (!nim)
+            throw new Error("Harap login");
         yield scheduleService.joinSchedule({ nim, schedule_id });
+        webSocketService.sendMessageToClients("tessss");
         return res.status(200).json({ status: true });
     }
     catch (error) {

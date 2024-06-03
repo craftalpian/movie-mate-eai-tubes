@@ -1,20 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { id } from "../utils";
-import amqp from "amqplib";
 
 class ScheduleService {
   private prismaClient;
-  private QUEUE_NAME = "notifications";
 
   constructor() {
     this.prismaClient = new PrismaClient();
-  }
-
-  async setupRabbitMQ() {
-    const connection = await amqp.connect("amqp://localhost");
-    const channel = await connection.createChannel();
-    await channel.assertQueue(this.QUEUE_NAME, { durable: true });
-    return channel;
   }
 
   async joinSchedule({
@@ -39,9 +30,6 @@ class ScheduleService {
           session_mate_id: id("sm"),
         },
       });
-
-      const channel = await this.setupRabbitMQ();
-      channel.sendToQueue(this.QUEUE_NAME, Buffer.from("New notification"));
     }
 
     return true;

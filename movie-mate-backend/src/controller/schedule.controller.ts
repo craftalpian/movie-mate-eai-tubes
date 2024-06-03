@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AuthService, ScheduleService } from "../service";
+import { AuthService, ScheduleService, WebSocketService } from "../service";
 
 const scheduleService = new ScheduleService();
 const authService = new AuthService();
@@ -20,13 +20,19 @@ const listAllSchedule = async (req: Request, res: Response) => {
   }
 };
 
-const watchMovieBySchedule = async (req: Request, res: Response) => {
+const watchMovieBySchedule = async (
+  req: Request,
+  res: Response,
+  webSocketService: WebSocketService
+) => {
   try {
     const { schedule_id }: any = req?.params;
     let { cookie } = req?.headers;
     cookie = decodeURIComponent(cookie?.split("igracias=")[1] || "");
     const { nim } = await authService.detail({ cookie });
+    if (!nim) throw new Error("Harap login");
     await scheduleService.joinSchedule({ nim, schedule_id });
+    webSocketService.sendMessageToClients("tessss");
     return res.status(200).json({ status: true });
   } catch (error: any) {
     return res.status(400).json({

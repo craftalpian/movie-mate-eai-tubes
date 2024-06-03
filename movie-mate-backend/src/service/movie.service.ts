@@ -33,12 +33,15 @@ class MovieService {
             movie_id: movie?.movie_id,
           },
         });
-        const favouriteByMe = await this.prismaClient.favourite.count({
-          where: {
-            movie_id: movie?.movie_id,
-            nim,
-          },
-        });
+        let favouriteByMe = 0;
+        if (nim) {
+          favouriteByMe = await this.prismaClient.favourite.count({
+            where: {
+              movie_id: movie?.movie_id,
+              nim,
+            },
+          });
+        }
 
         return {
           ...movie,
@@ -93,8 +96,8 @@ class MovieService {
     return false;
   }
 
-  async movieById(movie_id: string) {
-    return await this.prismaClient.movie.findFirst({
+  async movieById({ movie_id, nim }: { movie_id: string; nim?: string }) {
+    const movie = await this.prismaClient.movie.findFirst({
       where: {
         movie_id,
       },
@@ -113,6 +116,29 @@ class MovieService {
         production: true,
       },
     });
+
+    const totalFavourite = await this.prismaClient.favourite.count({
+      where: {
+        movie_id,
+      },
+    });
+    let favouriteByMe = 0;
+    if (nim) {
+      favouriteByMe = await this.prismaClient.favourite.count({
+        where: {
+          movie_id: movie?.movie_id,
+          nim,
+        },
+      });
+    }
+
+    return {
+      ...movie,
+      total_favourite: totalFavourite,
+      favourite_by_me: favouriteByMe > 0,
+    };
+
+    return { ...movie };
   }
 
   async theaterByCity(city_id: string) {

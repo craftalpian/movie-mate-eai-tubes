@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "./_lib/store";
 import { setCityId, setMovieId } from "./_lib/reducer/config.reducer";
 import { getAllTheater } from "./_hooks/theaters";
 import { useEffect } from "react";
-import amqp from "amqplib";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -21,26 +21,18 @@ const Home = () => {
   const { refetch: refetchTheaters } = getAllTheater();
 
   useEffect(() => {
-    const setupRabbitMQ = async () => {
-      const connection = await amqp.connect("amqp://localhost");
-      const channel = await connection.createChannel();
-      await channel.assertQueue("notifications", { durable: true });
+    const client = new W3CWebSocket("ws://localhost:1000");
 
-      channel.consume(
-        "notifications",
-        (message: any) => {
-          const content = message.content.toString();
-          // toast.success(content);
-          console.log({ content });
-        },
-        { noAck: true }
-      );
+    client.onopen = () => {
+      console.log("Koneksi ke WebSocket berhasil dibuat");
     };
 
-    setupRabbitMQ();
+    client.onmessage = (message: any) => {
+      console.log("Pesan dari server:", message.data);
+    };
 
     return () => {
-      // Cleanup
+      client.close();
     };
   }, []);
 
