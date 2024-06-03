@@ -34,7 +34,6 @@ const detail = async (req: Request, res: Response) => {
     const { client_id }: any = req?.query;
     let { cookie } = req?.headers;
     cookie = decodeURIComponent(cookie?.split("igracias=")[1] || "");
-    console.log({ cookie });
     if (!cookie || !client_id) throw new Error("Data kurang lengkap");
     const apiData = await apiService.apiDetail(client_id);
     if (!apiData) throw new Error("client_id not found");

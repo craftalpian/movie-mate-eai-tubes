@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.detail = exports.login = exports.listAllSchedule = exports.listAllTheater = exports.movieDetail = exports.listAllCity = exports.listAllMovie = void 0;
+exports.watchMovieBySchedule = exports.detail = exports.login = exports.listAllSchedule = exports.listAllTheater = exports.movieDetail = exports.listAllCity = exports.listAllMovie = void 0;
 const movie_controller_1 = require("./movie.controller");
 Object.defineProperty(exports, "listAllMovie", { enumerable: true, get: function () { return movie_controller_1.listAllMovie; } });
 Object.defineProperty(exports, "movieDetail", { enumerable: true, get: function () { return movie_controller_1.movieDetail; } });
@@ -10,6 +10,7 @@ const theater_controller_1 = require("./theater.controller");
 Object.defineProperty(exports, "listAllTheater", { enumerable: true, get: function () { return theater_controller_1.listAllTheater; } });
 const schedule_controller_1 = require("./schedule.controller");
 Object.defineProperty(exports, "listAllSchedule", { enumerable: true, get: function () { return schedule_controller_1.listAllSchedule; } });
+Object.defineProperty(exports, "watchMovieBySchedule", { enumerable: true, get: function () { return schedule_controller_1.watchMovieBySchedule; } });
 const auth_controller_1 = require("./auth.controller");
 Object.defineProperty(exports, "login", { enumerable: true, get: function () { return auth_controller_1.login; } });
 Object.defineProperty(exports, "detail", { enumerable: true, get: function () { return auth_controller_1.detail; } });

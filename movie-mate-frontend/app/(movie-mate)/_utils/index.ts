@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 
 export const formatToRupiah = (angka: number) => {
-  return "🎫 Rp" + angka.toLocaleString("id-ID");
+  return "Rp" + angka.toLocaleString("id-ID");
 };
 
 export const indonesianTimestamp = () => {

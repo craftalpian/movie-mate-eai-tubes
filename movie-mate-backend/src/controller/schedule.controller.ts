@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { ScheduleService } from "../service";
+import { AuthService, ScheduleService } from "../service";
 
 const scheduleService = new ScheduleService();
+const authService = new AuthService();
 
 const listAllSchedule = async (req: Request, res: Response) => {
   try {
@@ -11,9 +12,28 @@ const listAllSchedule = async (req: Request, res: Response) => {
       start_timestamp,
     });
     return res.status(200).json({ data: allSchedule });
-  } catch (error) {
-    console.error({ error });
+  } catch (error: any) {
+    return res.status(400).json({
+      message: error?.message || "Bermasalah",
+      success: false,
+    });
   }
 };
 
-export { listAllSchedule };
+const watchMovieBySchedule = async (req: Request, res: Response) => {
+  try {
+    const { schedule_id }: any = req?.params;
+    let { cookie } = req?.headers;
+    cookie = decodeURIComponent(cookie?.split("igracias=")[1] || "");
+    const { nim } = await authService.detail({ cookie });
+    await scheduleService.joinSchedule({ nim, schedule_id });
+    return res.status(200).json({ status: true });
+  } catch (error: any) {
+    return res.status(400).json({
+      message: error?.message || "Bermasalah",
+      success: false,
+    });
+  }
+};
+
+export { listAllSchedule, watchMovieBySchedule };

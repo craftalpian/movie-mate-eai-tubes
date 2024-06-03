@@ -9,6 +9,8 @@ import { getMovie } from "./_hooks/movie";
 import { useAppDispatch, useAppSelector } from "./_lib/store";
 import { setCityId, setMovieId } from "./_lib/reducer/config.reducer";
 import { getAllTheater } from "./_hooks/theaters";
+import { useEffect } from "react";
+import amqp from "amqplib";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +19,30 @@ const Home = () => {
   const { isLoading: citiesLoading } = getAllCity();
   const { isLoading: isLoadingMovieData, refetch: refetchMovie } = getMovie();
   const { refetch: refetchTheaters } = getAllTheater();
+
+  useEffect(() => {
+    const setupRabbitMQ = async () => {
+      const connection = await amqp.connect("amqp://localhost");
+      const channel = await connection.createChannel();
+      await channel.assertQueue("notifications", { durable: true });
+
+      channel.consume(
+        "notifications",
+        (message: any) => {
+          const content = message.content.toString();
+          // toast.success(content);
+          console.log({ content });
+        },
+        { noAck: true }
+      );
+    };
+
+    setupRabbitMQ();
+
+    return () => {
+      // Cleanup
+    };
+  }, []);
 
   if (moviesLoading || citiesLoading) return <div />;
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { getAllSchedule } from "../_hooks/schedule";
+import { watchMovie } from "../_hooks/watch-movie";
 import { setMovieTheaterId } from "../_lib/reducer/config.reducer";
 import { useAppDispatch, useAppSelector } from "../_lib/store";
 import { formatToRupiah, indonesianTimestamp } from "../_utils";
@@ -10,6 +11,7 @@ const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
   const today = indonesianTimestamp().format("dddd");
   const dispatch = useAppDispatch();
   const { refetch: refetchSchedule, data: dataSchedule } = getAllSchedule();
+  const { mutateAsync: createWatchMovie } = watchMovie();
 
   return (
     <div
@@ -66,71 +68,103 @@ const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
                 weekend_price,
                 theater_id,
                 movie_theater_id,
-              }) => (
-                <div
-                  className="collapse collapse-arrow bg-base-200 outline-none"
-                  key={theater_id}
-                  onClick={() => {
-                    dispatch(setMovieTheaterId(movie_theater_id));
-                  }}
-                >
-                  <input type="radio" name="my-accordion-2" />
-                  <div className="collapse-title text-xl font-medium capitalize">
-                    🎥 {theater_name} <br />
-                    <div className="badge badge-neutral">
-                      {["Sunday", "Saturday"]?.includes(today)
-                        ? formatToRupiah(weekend_price)
-                        : formatToRupiah(weekday_price)}
+              }) => {
+                const todayPrice = ["Sunday", "Saturday"]?.includes(today)
+                  ? weekend_price
+                  : weekday_price;
+                return (
+                  <div
+                    className="collapse collapse-arrow bg-base-200 outline-none"
+                    key={theater_id}
+                    onClick={() => {
+                      dispatch(setMovieTheaterId(movie_theater_id));
+                    }}
+                  >
+                    <input type="radio" name="my-accordion-2" />
+                    <div className="collapse-title text-xl font-medium capitalize">
+                      🎥 {theater_name} <br />
+                      <div className="badge badge-neutral">
+                        🎫 {formatToRupiah(todayPrice)}
+                      </div>
                     </div>
-                  </div>
-                  <div className="collapse-content mt-0">
-                    <div className="divider mt-0"></div>
+                    <div className="collapse-content mt-0">
+                      <div className="divider mt-0"></div>
 
-                    {isLoading ||
-                      (!dataSchedule && (
-                        <div className="flex items-center justify-center">
-                          <span className="loading loading-spinner loading-lg"></span>
-                        </div>
-                      ))}
-                    <div className="space-y-4">
-                      {!isLoading &&
-                        dataSchedule &&
-                        dataSchedule?.map(({ start_time }: any) => (
-                          <div className="collapse bg-base-300">
-                            <input type="radio" name="my-accordion-1" />
-                            <div className="collapse-title text-xl font-medium">
-                              ⏰ Jam {start_time}
-                              <button className="btn btn-sm disabled self-end ml-2">
-                                Normal
-                              </button>
-                            </div>
-                            <div className="collapse-content">
-                              <div className="flex items-center gap-3">
-                                <div className="avatar">
-                                  <div className="mask mask-squircle w-10 h-10">
-                                    <img
-                                      src="https://img.daisyui.com/tailwind-css-component-profile-2@56w.png"
-                                      alt="Avatar Tailwind CSS Component"
-                                    />
-                                  </div>
-                                </div>
-                                <div>
-                                  <div className="font-bold">Hart Hagerty</div>
-                                  <div className="text-sm opacity-50">
-                                    United States
-                                  </div>
-                                </div>
-                              </div>
-                              <button className="btn btn-block mt-4">
-                                Ikut Nonton!
-                              </button>
-                            </div>
+                      {isLoading ||
+                        (!dataSchedule && (
+                          <div className="flex items-center justify-center">
+                            <span className="loading loading-spinner loading-lg"></span>
                           </div>
                         ))}
+                      <div className="space-y-4">
+                        {!isLoading &&
+                          dataSchedule &&
+                          dataSchedule?.map(
+                            ({ start_time, mates, schedule_id }: any) => (
+                              <div className="collapse bg-base-300">
+                                <input type="radio" name="my-accordion-1" />
+                                <div className="collapse-title text-xl font-medium flex flex-row">
+                                  <h1>⏰ Jam {start_time}</h1>
+                                  {mates?.length > 0 && (
+                                    <div className="inline-flex space-x-2">
+                                      <button className="btn btn-xs disabled self-end ml-2">
+                                        👤 {mates?.length}
+                                      </button>
+                                      <button className="btn btn-xs disabled self-end">
+                                        💰{" "}
+                                        {formatToRupiah(
+                                          mates?.length * todayPrice
+                                        ).replace(".000", "")}
+                                        K
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="collapse-content">
+                                  {mates?.length > 0 &&
+                                    mates?.map(
+                                      ({ image_url, full_name, nim }: any) => (
+                                        <div className="flex items-center gap-3">
+                                          <div className="avatar">
+                                            <div className="mask mask-squircle w-10 h-10">
+                                              <img
+                                                src={image_url}
+                                                alt={full_name}
+                                              />
+                                            </div>
+                                          </div>
+                                          <div>
+                                            <div className="font-bold">
+                                              {full_name}{" "}
+                                              {nim === configState?.nim && "❇️"}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )
+                                    )}
+                                  {mates?.filter(
+                                    ({ nim }: any) => nim == configState?.nim
+                                  )?.length < 1 && (
+                                    <button
+                                      className="btn btn-block mt-4"
+                                      onClick={async () => {
+                                        await createWatchMovie({ schedule_id });
+                                      }}
+                                    >
+                                      {mates?.length > 0
+                                        ? "Ikut Nonton!"
+                                        : "Gas Nonton!"}
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
+                );
+              }
             )}
           </>
         )}

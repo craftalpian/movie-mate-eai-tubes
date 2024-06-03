@@ -8,8 +8,11 @@ const listAllTheater = async (req: Request, res: Response) => {
     const { city_id, movie_id }: any = req?.query;
     const allTheater = await theaterService.theaterList({ city_id, movie_id });
     return res.status(200).json({ data: allTheater });
-  } catch (error) {
-    console.error({ error });
+  } catch (error: any) {
+    return res.status(400).json({
+      message: error?.message || "Bermasalah",
+      success: false,
+    });
   }
 };
 

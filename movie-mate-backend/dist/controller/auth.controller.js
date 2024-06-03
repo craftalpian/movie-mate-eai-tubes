@@ -45,7 +45,6 @@ const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { client_id } = req === null || req === void 0 ? void 0 : req.query;
         let { cookie } = req === null || req === void 0 ? void 0 : req.headers;
         cookie = decodeURIComponent((cookie === null || cookie === void 0 ? void 0 : cookie.split("igracias=")[1]) || "");
-        console.log({ cookie });
         if (!cookie || !client_id)
             throw new Error("Data kurang lengkap");
         const apiData = yield apiService.apiDetail(client_id);

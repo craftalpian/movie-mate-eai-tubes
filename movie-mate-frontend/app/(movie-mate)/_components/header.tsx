@@ -4,7 +4,6 @@ import { getUser } from "../_hooks/detail";
 
 const Header = () => {
   const { data } = getUser();
-
   return (
     <div className="navbar bg-base-100 border-b shadow-sm absolute top-0 max-w-sm z-50">
       <div className="navbar-start">
@@ -30,13 +29,7 @@ const Header = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>Homepage</a>
-            </li>
-            <li>
-              <a>Portfolio</a>
-            </li>
-            <li>
-              <a>About</a>
+              <a href="https://github.com/craftalpian">Github</a>
             </li>
           </ul>
         </div>
@@ -61,10 +54,7 @@ const Header = () => {
             className="btn btn-ghost btn-circle avatar"
           >
             <div className="w-10 rounded-full">
-              <img
-                alt={data?.full_name}
-                src={data?.image_url}
-              />
+              <img alt={data?.full_name} src={data?.image_url} />
             </div>
           </div>
         )}

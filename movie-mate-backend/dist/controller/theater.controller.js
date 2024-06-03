@@ -19,7 +19,10 @@ const listAllTheater = (req, res) => __awaiter(void 0, void 0, void 0, function*
         return res.status(200).json({ data: allTheater });
     }
     catch (error) {
-        console.error({ error });
+        return res.status(400).json({
+            message: (error === null || error === void 0 ? void 0 : error.message) || "Bermasalah",
+            success: false,
+        });
     }
 });
 exports.listAllTheater = listAllTheater;
