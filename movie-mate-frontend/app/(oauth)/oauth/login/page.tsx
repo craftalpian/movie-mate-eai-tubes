@@ -1,6 +1,6 @@
 "use client";
 
-import { loginIgracias } from "@/app/(movie-mate)/_hooks/login-igracias";
+import { useLogin } from "@/app/(movie-mate)/_hooks/login-igracias";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -16,7 +16,7 @@ const LoginPage = () => {
   const [cookie, setCookie] = useState<string | null>(null);
   const [ownerName, setOwnerName] = useState<string | null>(null);
   const [fullName, setFullName] = useState<string | null>(null);
-  const { mutateAsync: loginAsync } = loginIgracias();
+  const { mutateAsync: loginAsync } = useLogin();
   const {
     register,
     handleSubmit,

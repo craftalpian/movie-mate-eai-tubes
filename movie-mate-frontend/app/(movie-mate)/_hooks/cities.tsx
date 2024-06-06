@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { useAppDispatch } from "../_lib/store";
 import { setCities } from "../_lib/reducer/config.reducer";
 
-export const getAllCity = () => {
+export const useAllCity = () => {
   const dispatch = useAppDispatch();
   return useQuery({
     queryFn: async () => {

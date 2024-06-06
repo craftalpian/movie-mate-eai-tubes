@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { useAppDispatch, useAppSelector } from "../_lib/store";
 import { setTheaters } from "../_lib/reducer/config.reducer";
 
-export const getAllTheater = () => {
+export const useTheater = () => {
   const configState = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   return useQuery({

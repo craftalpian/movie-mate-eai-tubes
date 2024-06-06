@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { useAppDispatch, useAppSelector } from "../_lib/store";
 import { setMovies } from "../_lib/reducer/config.reducer";
 
-export const getAllMovie = () => {
+export const useAllMovie = () => {
   const configState = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   return useQuery({

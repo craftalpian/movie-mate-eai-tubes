@@ -1,22 +1,22 @@
 "use client";
 
 import clsx from "clsx";
-import { getAllSchedule } from "../_hooks/schedule";
-import { watchMovie } from "../_hooks/watch-movie";
+import { useAllSchedule } from "../_hooks/schedule";
+import { useWatchMovie } from "../_hooks/watch-movie";
 import { setMovieTheaterId } from "../_lib/reducer/config.reducer";
 import { useAppDispatch, useAppSelector } from "../_lib/store";
 import { formatToRupiah, indonesianTimestamp } from "../_utils";
-import { createFavourite } from "../_hooks/add-favourite";
-import { deleteFavourite } from "../_hooks/remove-favourite";
+import { useCreateFavourite } from "../_hooks/add-favourite";
+import { useDeleteFavourite } from "../_hooks/remove-favourite";
 
 const MovieCardModal = ({ isLoading }: { isLoading: boolean }) => {
   const configState = useAppSelector((state) => state);
   const today = indonesianTimestamp().format("dddd");
   const dispatch = useAppDispatch();
-  const { data: dataSchedule } = getAllSchedule();
-  const { mutateAsync: createWatchMovie } = watchMovie();
-  const { mutateAsync: favourite } = createFavourite();
-  const { mutateAsync: unfavourite } = deleteFavourite();
+  const { data: dataSchedule } = useAllSchedule();
+  const { mutateAsync: createWatchMovie } = useWatchMovie();
+  const { mutateAsync: favourite } = useCreateFavourite();
+  const { mutateAsync: unfavourite } = useDeleteFavourite();
 
   return (
     <div

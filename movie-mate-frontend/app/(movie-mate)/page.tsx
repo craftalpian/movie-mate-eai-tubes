@@ -1,22 +1,22 @@
 "use client";
 
 import CityOption from "./_components/city-option";
-import { getAllCity } from "./_hooks/cities";
-import { getAllMovie } from "./_hooks/movies";
+import { useAllCity } from "./_hooks/cities";
+import { useAllMovie } from "./_hooks/movies";
 import MovieList from "./_components/movie-list";
 import MovieCardModal from "./_components/movie-card-modal";
-import { getMovie } from "./_hooks/movie";
+import { useMovie } from "./_hooks/movie";
 import { useAppDispatch, useAppSelector } from "./_lib/store";
 import { setCityId, setMovieId } from "./_lib/reducer/config.reducer";
-import { getAllTheater } from "./_hooks/theaters";
+import { useTheater } from "./_hooks/theaters";
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const configState = useAppSelector((state) => state);
-  const { isLoading: moviesLoading, refetch: refetchAllMovie } = getAllMovie();
-  const { isLoading: citiesLoading } = getAllCity();
-  const { isLoading: isLoadingMovieData, refetch: refetchMovie } = getMovie();
-  const { refetch: refetchTheaters } = getAllTheater();
+  const { isLoading: moviesLoading, refetch: refetchAllMovie } = useAllMovie();
+  const { isLoading: citiesLoading } = useAllCity();
+  const { isLoading: isLoadingMovieData, refetch: refetchMovie } = useMovie();
+  const { refetch: refetchTheaters } = useTheater();
 
   if (moviesLoading || citiesLoading) return <div />;
 

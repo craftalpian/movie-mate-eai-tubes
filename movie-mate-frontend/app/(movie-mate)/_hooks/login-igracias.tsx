@@ -3,7 +3,7 @@
 import axios, { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
-export const loginIgracias = () => {
+export const useLogin = () => {
   return useMutation({
     mutationFn: async ({
       username,

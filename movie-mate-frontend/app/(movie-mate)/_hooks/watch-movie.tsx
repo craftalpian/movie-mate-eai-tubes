@@ -3,10 +3,10 @@
 import axios, { AxiosError } from "axios";
 import { useMutation } from "react-query";
 import { parseCookies } from "nookies";
-import { getAllSchedule } from "./schedule";
+import { useAllSchedule } from "./schedule";
 
-export const watchMovie = () => {
-  const { refetch: refetchSchedule } = getAllSchedule();
+export const useWatchMovie = () => {
+  const { refetch: refetchSchedule } = useAllSchedule();
   const cookies = parseCookies();
 
   return useMutation({

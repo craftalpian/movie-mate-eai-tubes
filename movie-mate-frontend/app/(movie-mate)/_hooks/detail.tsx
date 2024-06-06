@@ -6,7 +6,7 @@ import { parseCookies } from "nookies";
 import { useAppDispatch } from "../_lib/store";
 import { setNim } from "../_lib/reducer/config.reducer";
 
-export const getUser = () => {
+export const useUser = () => {
   const cookies = parseCookies();
   const dispatch = useAppDispatch();
   return useQuery({

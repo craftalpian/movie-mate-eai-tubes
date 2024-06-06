@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { useAppSelector } from "../_lib/store";
 import { delay, indonesianTimestamp } from "../_utils";
 
-export const getAllSchedule = () => {
+export const useAllSchedule = () => {
   const configState = useAppSelector((state) => state);
   return useQuery({
     queryFn: async () => {

@@ -1,9 +1,9 @@
 "use client";
 
-import { getUser } from "../_hooks/detail";
+import { useUser } from "../_hooks/detail";
 
 const Header = () => {
-  const { data } = getUser();
+  const { data } = useUser();
   return (
     <div className="navbar bg-base-100 border-b shadow-sm absolute top-0 max-w-sm z-50">
       <div className="navbar-start">

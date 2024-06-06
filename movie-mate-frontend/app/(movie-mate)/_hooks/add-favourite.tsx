@@ -3,15 +3,15 @@
 import axios from "axios";
 import { parseCookies } from "nookies";
 import { useMutation } from "react-query";
-import { getAllSchedule } from "./schedule";
-import { getAllMovie } from "./movies";
-import { getMovie } from "./movie";
+import { useAllSchedule } from "./schedule";
+import { useAllMovie } from "./movies";
+import { useMovie } from "./movie";
 
-export const createFavourite = () => {
+export const useCreateFavourite = () => {
   const cookies = parseCookies();
-  const { refetch: refetchSchedule } = getAllSchedule();
-  const { refetch: refetchMovies } = getAllMovie();
-  const { refetch: refetchMovie } = getMovie();
+  const { refetch: refetchSchedule } = useAllSchedule();
+  const { refetch: refetchMovies } = useAllMovie();
+  const { refetch: refetchMovie } = useMovie();
   return useMutation({
     mutationFn: async ({ movie_id }: { movie_id: string }) => {
       const { data } = await axios.post(
